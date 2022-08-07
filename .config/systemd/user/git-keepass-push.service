@@ -1,0 +1,6 @@
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mateusz/data/keepass
+Environment="GIT_SSH_COMMAND=ssh -i ssh/key -o IdentitiesOnly=yes"
+ExecStart=git commit -am'auto update'
+ExecStart=git push

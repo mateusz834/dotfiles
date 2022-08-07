@@ -1,0 +1,6 @@
+[Path]
+PathChanged=/home/mateusz/.local/share/git-keepass/pass.kdbx
+
+[Install]
+WantedBy=default.target
+

@@ -19,8 +19,9 @@ require('go').setup({
 	lsp_cfg = golspcfg,
 	lsp_codelens = false,
 	lsp_inlay_hints = {
-		enable = false,
-		parameter_hints_prefix='#',
+		enable = true,
+		parameter_hints_prefix = "▶ ",
+		other_hints_prefix = "▬▶",
 	},
 	lsp_on_client_start = function (client, bufnr)
 		require('config.keymap').go_on_attach(client, bufnr)

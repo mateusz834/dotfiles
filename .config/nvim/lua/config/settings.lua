@@ -17,6 +17,10 @@ set.softtabstop = 4
 set.smartindent = true
 --set.expandtab = true --replace tab with spaces
 
+-- disable <F1> help menu
+vim.keymap.set('n', '<F1>', '<nop>')
+vim.keymap.set('i', '<F1>', '<nop>')
+
 -- higlight trailing spaces
 cmd('highlight ExtraWhitespace ctermbg=green guibg=green')
 cmd('match ExtraWhitespace /\\s\\+$/')

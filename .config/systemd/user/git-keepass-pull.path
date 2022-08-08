@@ -1,0 +1,6 @@
+[Path]
+PathModified=/tmp/keepassxc-mateusz.lock
+
+[Install]
+WantedBy=default.target
+

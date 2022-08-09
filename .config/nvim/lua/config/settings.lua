@@ -53,9 +53,6 @@ end
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 
-local function ts_disable(_, bufnr)
-    return api.nvim_buf_line_count(bufnr) > 1000
-end
 -- nvim-treesitter/nvim-treesitter
 require('nvim-treesitter.configs').setup({
 	ensure_installed = { 'go', 'lua' },

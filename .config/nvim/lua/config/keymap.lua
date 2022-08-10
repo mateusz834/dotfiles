@@ -11,8 +11,10 @@ set('n', '<leader>fe', ':Ex<Enter>')
 set('n', '<leader>h', ':noh<Enter>')
 
 --move current line up/down
-set('n', '<c-j>', ':m +1<Enter>')
-set('n', '<c-k>', ':m -2<Enter>')
+set('n', '<c-J>', ':m +1<Enter>')
+set('n', 'ə', ':m +1<Enter>') -- Right Alt + j
+set('n', '<c-K>', ':m -2<Enter>')
+set('n', '…', ':m -2<Enter>') -- Right Alt + k
 
 local opts = { noremap=true, silent=true }
 set('n', '<space>e', vim.diagnostic.open_float, opts)

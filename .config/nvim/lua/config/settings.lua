@@ -36,6 +36,14 @@ g.winresizer_vert_resize=2
 g.winresizer_horiz_resize=2
 g.winresizer_start_key='' --binding removed here so, that i have it explicit in kaymap fils
 
+-- folke/todo-comments.nvim
+require("todo-comments").setup({
+	highlight = {
+		before = "fg",
+		keyword = "fg",
+	}
+})
+
 -- akinsho/toggleterm.nvim
 require("toggleterm").setup({
 	open_mapping = [[<c-\>]],

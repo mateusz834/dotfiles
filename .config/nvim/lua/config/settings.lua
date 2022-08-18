@@ -41,6 +41,7 @@ require("todo-comments").setup({
 	highlight = {
 		before = "fg",
 		keyword = "fg",
+		pattern = [[.*<(KEYWORDS).*:]],
 	}
 })
 

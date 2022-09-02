@@ -16,6 +16,10 @@ set('n', 'ə', ':m +1<Enter>') -- Right Alt + j
 set('n', '<c-K>', ':m -2<Enter>')
 set('n', '…', ':m -2<Enter>') -- Right Alt + k
 
+-- center when moving
+set('n', '<c-d>', '<c-d>zz')
+set('n', '<c-u>', '<c-u>zz')
+
 local opts = { noremap=true, silent=true }
 set('n', '<space>e', vim.diagnostic.open_float, opts)
 set('n', '[d', vim.diagnostic.goto_prev, opts)

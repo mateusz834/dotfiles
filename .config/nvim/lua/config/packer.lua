@@ -22,7 +22,12 @@ require('packer').startup(function(use)
 	use 'akinsho/toggleterm.nvim'
 
 	use {
-		"folke/todo-comments.nvim",
-		requires = "nvim-lua/plenary.nvim",
+		'folke/todo-comments.nvim',
+		requires = 'nvim-lua/plenary.nvim',
+	}
+
+	use {
+		'ThePrimeagen/harpoon',
+		requires = 'nvim-lua/plenary.nvim'
 	}
 end)

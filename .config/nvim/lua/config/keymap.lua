@@ -20,6 +20,14 @@ set('n', '…', ':m -2<Enter>') -- Right Alt + k
 set('n', '<c-d>', '<c-d>zz')
 set('n', '<c-u>', '<c-u>zz')
 
+-- ThePrimeagen/harpoon
+set('n', "<leader>ha", function() require("harpoon.mark").add_file() end, silent)
+set('n', "<leader>hh", function() require("harpoon.ui").toggle_quick_menu() end, silent)
+set('n', "<c-q>", function() require("harpoon.ui").nav_file(1) end, silent)
+set('n', "<c-w>", function() require("harpoon.ui").nav_file(2) end, silent)
+set('n', "<c-e>", function() require("harpoon.ui").nav_file(3) end, silent)
+set('n', "<c-r>", function() require("harpoon.ui").nav_file(4) end, silent)
+
 local opts = { noremap=true, silent=true }
 set('n', '<space>e', vim.diagnostic.open_float, opts)
 set('n', '[d', vim.diagnostic.goto_prev, opts)

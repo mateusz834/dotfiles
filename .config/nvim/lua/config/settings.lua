@@ -28,8 +28,7 @@ cmd('match ExtraWhitespace /\\s\\+$/')
 g.mapleader=' '
 
 -- folke/tokyonight.nvim
-g.tokyonight_style='night'
-cmd('colorscheme tokyonight')
+cmd('colorscheme tokyonight-night')
 
 -- simeji/winresizer
 g.winresizer_vert_resize=2

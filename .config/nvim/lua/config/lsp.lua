@@ -10,6 +10,7 @@ local golspcfg = {
 				shadow = true,
 			},
 			staticcheck = true,
+			usePlaceholders = false,
 		},
 	},
 }
@@ -25,7 +26,7 @@ require('go').setup({
 	},
 	lsp_on_client_start = function (client, bufnr)
 		require('config.keymap').go_on_attach(client, bufnr)
-		require('lsp_signature').on_attach()
+		require('lsp_signature').on_attach({},bufnr)
 	end,
 	lsp_keymaps = false,
 	gopls_cmd = { 'gopls',  '-remote.listen.timeout=15s'},

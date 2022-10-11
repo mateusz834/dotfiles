@@ -40,8 +40,11 @@ require("todo-comments").setup({
 	highlight = {
 		before = "fg",
 		keyword = "fg",
-		pattern = [[.*<(KEYWORDS).*:]],
-	}
+        pattern = [[.*<(KEYWORDS)\s*]],
+	},
+    search = {
+        pattern = [[\b(KEYWORDS)\b]],
+    },
 })
 
 -- akinsho/toggleterm.nvim

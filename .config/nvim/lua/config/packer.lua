@@ -30,4 +30,11 @@ require('packer').startup(function(use)
 		'ThePrimeagen/harpoon',
 		requires = 'nvim-lua/plenary.nvim'
 	}
+
+	use {
+		'folke/trouble.nvim',
+		requires = 'kyazdani42/nvim-web-devicons',
+	}
+
+	use 'simrat39/rust-tools.nvim'
 end)

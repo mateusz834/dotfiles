@@ -12,9 +12,7 @@ set('n', '<leader>h', ':noh<Enter>')
 
 --move current line up/down
 set('n', '<c-J>', ':m +1<Enter>')
-set('n', 'ə', ':m +1<Enter>') -- Right Alt + j
 set('n', '<c-K>', ':m -2<Enter>')
-set('n', '…', ':m -2<Enter>') -- Right Alt + k
 
 -- center when moving
 set('n', '<c-d>', '<c-d>zz')
@@ -34,10 +32,27 @@ set('n', '[d', vim.diagnostic.goto_prev, opts)
 set('n', ']d', vim.diagnostic.goto_next, opts)
 set('n', '<space>q', vim.diagnostic.setloclist, opts)
 
-local M = {}
-M.go_on_attach = function(client, bufnr)
-	local bufopts = { noremap=true, silent=true, buffer=bufnr }
+vim.api.nvim_set_keymap("n", "<leader>xx", "<cmd>Trouble<cr>",
+  {silent = true, noremap = true}
+)
+vim.api.nvim_set_keymap("n", "<leader>xw", "<cmd>Trouble workspace_diagnostics<cr>",
+  {silent = true, noremap = true}
+)
+vim.api.nvim_set_keymap("n", "<leader>xd", "<cmd>Trouble document_diagnostics<cr>",
+  {silent = true, noremap = true}
+)
+vim.api.nvim_set_keymap("n", "<leader>xl", "<cmd>Trouble loclist<cr>",
+  {silent = true, noremap = true}
+)
+vim.api.nvim_set_keymap("n", "<leader>xq", "<cmd>Trouble quickfix<cr>",
+  {silent = true, noremap = true}
+)
+vim.api.nvim_set_keymap("n", "gR", "<cmd>Trouble lsp_references<cr>",
+  {silent = true, noremap = true}
+)
 
+on_attach = function(client, bufnr)
+	local bufopts = { noremap=true, silent=true, buffer=bufnr }
 	set('n', 'gd', vim.lsp.buf.definition, bufopts)
 	set('n', 'K', vim.lsp.buf.hover, bufopts)
 	set('n', 'gi', vim.lsp.buf.implementation, bufopts)
@@ -46,21 +61,25 @@ M.go_on_attach = function(client, bufnr)
 	set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
 	set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
 	set('n', 'gr', vim.lsp.buf.references, bufopts)
+end
+
+local M = {}
+M.go_on_attach = function(client, bufnr)
+	on_attach(client, bufnr)
+
+	local bufopts = { noremap=true, silent=true, buffer=bufnr }
 	set('n', '<space>f', function() require('go.format').goimport() end, bufopts)
 	set('n', '<space>cl', ':GoCodeLenAct<Enter>', bufopts)
 	set('n', '<space>gc', function()
 		vim.lsp.buf.execute_command({
-			command = 'gopls.toggle_gc_details', 
+			command = 'gopls.toggle_gc_details',
 			arguments = { { URI = vim.uri_from_bufnr(0) } }
 		})
-		--[[
-		local view = vim.fn.winsaveview()
-		vim.cmd(":0")
-		vim.cmd(":keeppatterns /^package ")
-		vim.cmd(":GoCodeLenAct")
-		vim.fn.winrestview(view)
-		]]--
 	end, bufopts)
+end
+
+M.rust_on_attach = function(client, bufnr)
+	on_attach(client, bufnr)
 end
 
 return M

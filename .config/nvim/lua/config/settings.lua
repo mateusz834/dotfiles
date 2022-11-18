@@ -16,7 +16,7 @@ set.shiftwidth = 4
 set.softtabstop = 4
 set.smartindent = true
 --set.expandtab = true --replace tab with spaces
-
+--
 -- disable <F1> help menu
 vim.keymap.set('n', '<F1>', '<nop>')
 vim.keymap.set('i', '<F1>', '<nop>')
@@ -47,6 +47,9 @@ require("todo-comments").setup({
     },
 })
 
+-- folke/trouble.nvim
+require("trouble").setup({})
+
 -- akinsho/toggleterm.nvim
 require("toggleterm").setup({
 	open_mapping = [[<c-\>]],
@@ -66,7 +69,7 @@ vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 
 -- nvim-treesitter/nvim-treesitter
 require('nvim-treesitter.configs').setup({
-	ensure_installed = { 'go', 'lua' },
+	ensure_installed = { 'go', 'lua', 'rust' },
 	highlight = {
 		enable = true,
 		disable = function(lang, bufnr)

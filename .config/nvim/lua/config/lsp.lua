@@ -1,3 +1,30 @@
+-- Rust
+require("rust-tools").setup({
+  server = {
+	settings = {
+		["rust-analyzer"] = {
+			checkOnSave = {
+				command = "clippy",
+			},
+		},
+	},
+
+	cmd = { "rustup", "run", "stable", "rust-analyzer" },
+    on_attach = function(client, bufnr)
+		require('config.keymap').rust_on_attach(client, bufnr)
+		require('lsp_signature').on_attach({},bufnr)
+    end,
+  },
+})
+
+vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+	pattern = {'*.rs'},
+	callback = function()
+		 vim.lsp.buf.format({async=false})
+	end,
+})
+
+-- Go
 local golspcfg = {
 	settings = {
 		gopls = {
@@ -40,10 +67,12 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
 	end,
 })
 
+
 --[[
 require('lspconfig').golangci_lint_ls.setup{
 	init_options = {
 		--command = { "golangci-lint", "run", "--enable-all", "--disable", "exhaustivestruct,exhaustruct,wsl,gofumpt", "--out-format", "json" };
+		--command = { "golangci-lint", "run", "--out-format", "json" };
 	}
 }
 ]]--

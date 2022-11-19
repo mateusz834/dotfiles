@@ -40,11 +40,11 @@ require("todo-comments").setup({
 	highlight = {
 		before = "fg",
 		keyword = "fg",
-        pattern = [[.*<(KEYWORDS)\s*]],
+		pattern = [[.*<(KEYWORDS)\s*]],
 	},
-    search = {
-        pattern = [[\b(KEYWORDS)\b]],
-    },
+	search = {
+		pattern = [[\b(KEYWORDS)\b]],
+	},
 })
 
 -- folke/trouble.nvim

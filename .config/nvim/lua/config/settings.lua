@@ -52,7 +52,7 @@ require("trouble").setup({})
 
 -- nvim-treesitter/nvim-treesitter
 require('nvim-treesitter.configs').setup({
-	ensure_installed = { 'go', 'lua', 'rust', 'zig'},
+	ensure_installed = { 'go', 'lua', 'rust', 'zig', 'html', 'css', 'javascript', 'typescript'},
 	highlight = {
 		enable = true,
 		disable = function(lang, bufnr)

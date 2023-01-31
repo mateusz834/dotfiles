@@ -69,7 +69,7 @@ vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 
 -- nvim-treesitter/nvim-treesitter
 require('nvim-treesitter.configs').setup({
-	ensure_installed = { 'go', 'lua', 'rust' },
+	ensure_installed = { 'go', 'lua', 'rust', 'zig'},
 	highlight = {
 		enable = true,
 		disable = function(lang, bufnr)
@@ -97,7 +97,7 @@ vim.api.nvim_create_autocmd({ 'BufReadPost' }, {
 })
 
 -- make /home/mateusz/.cache/go-build directory read-only.
--- necessary when going to deifintion of a cgo stuff.
+-- necessary when going to definition of a cgo stuff.
 vim.api.nvim_create_autocmd({ 'BufReadPost' }, {
 	pattern = '/home/mateusz/.cache/go-build/*',
 	callback = function()

@@ -82,5 +82,9 @@ M.rust_on_attach = function(client, bufnr)
 	on_attach(client, bufnr)
 end
 
+M.zig_on_attach= function(client, bufnr)
+	on_attach(client, bufnr)
+end
+
 return M
 

@@ -1,3 +1,11 @@
+-- Zig
+require('lspconfig').zls.setup({
+    on_attach = function(client, bufnr)
+		require('config.keymap').zig_on_attach(client, bufnr)
+		require('lsp_signature').on_attach({},bufnr)
+    end,
+})
+
 -- Rust
 require("rust-tools").setup({
   server = {
@@ -6,9 +14,9 @@ require("rust-tools").setup({
 			checkOnSave = {
 				command = "clippy",
 			},
+			enableEnhancedTyping = false,
 		},
 	},
-
 	cmd = { "rustup", "run", "stable", "rust-analyzer" },
     on_attach = function(client, bufnr)
 		require('config.keymap').rust_on_attach(client, bufnr)

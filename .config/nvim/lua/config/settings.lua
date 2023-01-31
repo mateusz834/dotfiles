@@ -63,27 +63,17 @@ require('nvim-treesitter.configs').setup({
 	},
 })
 
--- make /home/mateusz/.rustup directory read-only.
-vim.api.nvim_create_autocmd({ 'BufReadPost' }, {
-	pattern = '/home/mateusz/.rustup/*',
-	callback = function()
-		vim.bo.readonly = true
-	end,
-})
+function set_read_only(dir)
+	vim.api.nvim_create_autocmd({ 'BufReadPost' }, {
+		pattern = dir,
+		callback = function()
+			vim.bo.readonly = true
+		end,
+	})
+end
 
--- make /home/mateusz/.cargo directory read-only.
-vim.api.nvim_create_autocmd({ 'BufReadPost' }, {
-	pattern = '/home/mateusz/.cargo/*',
-	callback = function()
-		vim.bo.readonly = true
-	end,
-})
+set_read_only('/home/mateusz/.rustup/*')
+set_read_only('/home/mateusz/.cargo/*')
 
--- make /home/mateusz/.cache/go-build directory read-only.
 -- necessary when going to definition of a cgo stuff.
-vim.api.nvim_create_autocmd({ 'BufReadPost' }, {
-	pattern = '/home/mateusz/.cache/go-build/*',
-	callback = function()
-		vim.bo.readonly = true
-	end,
-})
+set_read_only('/home/mateusz/.cache/go-build/*')

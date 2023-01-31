@@ -77,3 +77,13 @@ set_read_only('/home/mateusz/.cargo/*')
 
 -- necessary when going to definition of a cgo stuff.
 set_read_only('/home/mateusz/.cache/go-build/*')
+
+-- Make the hover preview (under 'K' keymap) with a max width and a rounded border.
+-- Source: https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization
+local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+	opts = opts or {}
+	opts.max_width = opts.max_width or 120
+	opts.border = opts.border or "rounded"
+	return orig_util_open_floating_preview(contents, syntax, opts, ...)
+end

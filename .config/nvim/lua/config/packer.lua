@@ -19,7 +19,6 @@ require('packer').startup(function(use)
 		'nvim-treesitter/nvim-treesitter',
 		run = ':TSUpdate'
 	}
-	use 'akinsho/toggleterm.nvim'
 
 	use {
 		'folke/todo-comments.nvim',

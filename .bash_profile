@@ -4,7 +4,7 @@
 
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
-export EDITOR=vim
+export EDITOR=nvim
 export GOPATH="$HOME/go"
 export GOBIN="$GOPATH/bin"
 export PATH="$HOME/.local/bin:$GOBIN:$PATH"

@@ -86,5 +86,17 @@ M.zig_on_attach= function(client, bufnr)
 	on_attach(client, bufnr)
 end
 
+M.html_on_attach= function(client, bufnr)
+	on_attach(client, bufnr)
+end
+
+M.css_on_attach= function(client, bufnr)
+	on_attach(client, bufnr)
+end
+
+M.js_on_attach= function(client, bufnr)
+	on_attach(client, bufnr)
+end
+
 return M
 

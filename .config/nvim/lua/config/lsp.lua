@@ -1,8 +1,53 @@
+function global_on_attach(bufnr)
+	require('lsp_signature').on_attach({},bufnr)
+end
+
+-- Javascript/Typescript
+require('lspconfig').tsserver.setup({
+	cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/typescript-language-server", "--stdio"},
+    on_attach = function(client, bufnr)
+		require('config.keymap').js_on_attach(client, bufnr)
+		global_on_attach()
+    end,
+})
+require'lspconfig'.eslint.setup({
+	cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-eslint-language-server", "--stdio"},
+    on_attach = function(client, bufnr)
+		require('config.keymap').js_on_attach(client, bufnr)
+		global_on_attach()
+    end,
+})
+
+-- For HTML and CSS.
+-- Enable (broadcasting) snippet capability for completion
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+-- HTML
+require('lspconfig').html.setup({
+	capabilities = capabilities,
+	cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-html-language-server", "--stdio"},
+    on_attach = function(client, bufnr)
+		require('config.keymap').html_on_attach(client, bufnr)
+		global_on_attach()
+    end,
+})
+
+-- CSS
+require('lspconfig').cssls.setup({
+	capabilities = capabilities,
+	cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-css-language-server", "--stdio"},
+    on_attach = function(client, bufnr)
+		require('config.keymap').css_on_attach(client, bufnr)
+		global_on_attach()
+    end,
+})
+
 -- Zig
 require('lspconfig').zls.setup({
     on_attach = function(client, bufnr)
 		require('config.keymap').zig_on_attach(client, bufnr)
-		require('lsp_signature').on_attach({},bufnr)
+		global_on_attach()
     end,
 })
 
@@ -20,7 +65,7 @@ require("rust-tools").setup({
 	cmd = { "rustup", "run", "stable", "rust-analyzer" },
     on_attach = function(client, bufnr)
 		require('config.keymap').rust_on_attach(client, bufnr)
-		require('lsp_signature').on_attach({},bufnr)
+		global_on_attach()
     end,
   },
 })
@@ -61,7 +106,7 @@ require('go').setup({
 	},
 	lsp_on_client_start = function (client, bufnr)
 		require('config.keymap').go_on_attach(client, bufnr)
-		require('lsp_signature').on_attach({},bufnr)
+		global_on_attach()
 	end,
 	lsp_keymaps = false,
 	gopls_cmd = { 'gopls',  '-remote.listen.timeout=15s'},

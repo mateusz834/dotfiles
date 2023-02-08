@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-source ./remove-from-path.sh
+source $HOME/.local/bin/remove-from-path.sh
 
 # https://www.reddit.com/r/kde/comments/zm6gag/prevent_a_browser_window_from_changing_virtual/
 # https://bugs.kde.org/show_bug.cgi?id=462996
 # TODO also remove the reference to this file in /home/mateusz/.config/alacritty/alacritty.yml
-echo "TODO: remove this script when kde bug gets fixed ($HOME/mateusz/.local/bin/xdg-open)"
+echo "TODO: remove this script when kde bug gets fixed ($HOME/.local/bin/xdg-open)"
 echo
 
 export XDG_CURRENT_DESKTOP=X-Generic

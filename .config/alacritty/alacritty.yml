@@ -44,7 +44,7 @@ colors:
     white: '0x63686d'
 
 font:
-  size: 8
+  size: 10
 
 window:
   startup_mode: Maximized

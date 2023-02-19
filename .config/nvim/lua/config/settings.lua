@@ -6,6 +6,10 @@ set.number=true
 set.scrolloff=3
 set.relativenumber=true
 
+-- use fsync when saving files.
+-- to preserve files after system crash.
+set.fsync = true;
+
 set.ignorecase=true
 --set.wrapscan=false
 

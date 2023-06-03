@@ -18,6 +18,34 @@ require'lspconfig'.eslint.setup({
     end,
 })
 
+vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+	pattern = {'*.js'},
+	callback = function()
+		 vim.lsp.buf.format({async=false})
+	end,
+})
+
+vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+	pattern = {'*.jsx'},
+	callback = function()
+		 vim.lsp.buf.format({async=false})
+	end,
+})
+
+vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+	pattern = {'*.ts'},
+	callback = function()
+		 vim.lsp.buf.format({async=false})
+	end,
+})
+
+vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+	pattern = {'*.tsx'},
+	callback = function()
+		 vim.lsp.buf.format({async=false})
+	end,
+})
+
 -- For HTML and CSS.
 -- Enable (broadcasting) snippet capability for completion
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -31,6 +59,13 @@ require('lspconfig').html.setup({
 		require('config.keymap').html_on_attach(client, bufnr)
 		global_on_attach()
     end,
+})
+
+vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+	pattern = {'*.html'},
+	callback = function()
+		 vim.lsp.buf.format({async=false})
+	end,
 })
 
 -- CSS
@@ -54,7 +89,11 @@ require('lspconfig').zls.setup({
 vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
 	pattern = {'*.zig'},
 	callback = function()
-		 vim.lsp.buf.format({async=false})
+		vim.lsp.buf.format({async=false})
+		vim.defer_fn(function()
+			-- For some reason zls started to open the Location List, close it.
+			vim.cmd.lclose()
+		end, 0)
 	end,
 })
 

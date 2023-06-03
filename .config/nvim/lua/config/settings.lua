@@ -15,12 +15,26 @@ set.ignorecase=true
 
 set.clipboard=unnamedplus
 
-set.tabstop = 4
-set.shiftwidth = 4
-set.softtabstop = 4
-set.smartindent = true
---set.expandtab = true --replace tab with spaces
---
+vim.api.nvim_create_autocmd('FileType', {
+	pattern = { "*" },
+	callback = function(args)
+		set.smartindent = true
+
+		local ft = vim.bo[args.buf].filetype
+		if ft == "javascript" or ft == "typescript" then
+			set.tabstop = 2
+			set.shiftwidth = 2
+			set.softtabstop = 2
+			set.expandtab = true --replace tab with spaces
+		else
+			set.tabstop = 4
+			set.shiftwidth = 4
+			set.softtabstop = 4
+			set.expandtab = false --replace tab with spaces
+		end
+	end
+})
+
 -- disable <F1> help menu
 vim.keymap.set('n', '<F1>', '<nop>')
 vim.keymap.set('i', '<F1>', '<nop>')
@@ -56,7 +70,7 @@ require("trouble").setup({})
 
 -- nvim-treesitter/nvim-treesitter
 require('nvim-treesitter.configs').setup({
-	ensure_installed = { 'go', 'lua', 'rust', 'zig', 'html', 'css', 'javascript', 'typescript'},
+	ensure_installed = { 'go', 'lua', 'rust', 'zig', 'html', 'css', 'javascript', 'typescript', 'jsdoc'},
 	highlight = {
 		enable = true,
 		disable = function(lang, bufnr)

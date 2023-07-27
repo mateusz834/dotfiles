@@ -25,7 +25,7 @@ require'lspconfig'.eslint.setup({
 	cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-eslint-language-server", "--stdio"},
     on_attach = function(client, bufnr)
 		require('config.keymap').js_on_attach(client, bufnr)
-		global_on_attach()
+		global_on_attach(bufnr)
     end,
 })
 
@@ -68,7 +68,7 @@ require('lspconfig').html.setup({
 	cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-html-language-server", "--stdio"},
     on_attach = function(client, bufnr)
 		require('config.keymap').html_on_attach(client, bufnr)
-		global_on_attach()
+		global_on_attach(bufnr)
     end,
 })
 
@@ -85,7 +85,7 @@ require('lspconfig').cssls.setup({
 	cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-css-language-server", "--stdio"},
     on_attach = function(client, bufnr)
 		require('config.keymap').css_on_attach(client, bufnr)
-		global_on_attach()
+		global_on_attach(bufnr)
     end,
 })
 
@@ -93,7 +93,7 @@ require('lspconfig').cssls.setup({
 require('lspconfig').zls.setup({
     on_attach = function(client, bufnr)
 		require('config.keymap').zig_on_attach(client, bufnr)
-		global_on_attach()
+		global_on_attach(bufnr)
     end,
 })
 
@@ -122,7 +122,7 @@ require("rust-tools").setup({
 	cmd = { "rustup", "run", "stable", "rust-analyzer" },
     on_attach = function(client, bufnr)
 		require('config.keymap').rust_on_attach(client, bufnr)
-		global_on_attach()
+		global_on_attach(bufnr)
     end,
   },
 })
@@ -163,7 +163,7 @@ require('go').setup({
 	},
 	lsp_on_client_start = function (client, bufnr)
 		require('config.keymap').go_on_attach(client, bufnr)
-		global_on_attach()
+		global_on_attach(bufnr)
 	end,
 	lsp_keymaps = false,
 	gopls_cmd = { 'gopls',  '-remote.listen.timeout=15s'},

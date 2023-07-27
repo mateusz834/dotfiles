@@ -5,10 +5,21 @@ end
 -- Javascript/Typescript
 require('lspconfig').tsserver.setup({
 	cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/typescript-language-server", "--stdio"},
-    on_attach = function(client, bufnr)
+	on_attach = function(client, bufnr)
 		require('config.keymap').js_on_attach(client, bufnr)
-		global_on_attach()
-    end,
+		global_on_attach(bufnr)
+		local conf = {
+			format = {
+				semicolons = 'insert'
+			}
+		}
+		client.notify('workspace/didChangeConfiguration', {
+			settings = {
+				typescript = conf,
+				javascript = conf,
+			}
+		})
+	end,
 })
 require'lspconfig'.eslint.setup({
 	cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-eslint-language-server", "--stdio"},

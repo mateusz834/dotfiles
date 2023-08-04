@@ -70,7 +70,7 @@ require("trouble").setup({})
 
 -- nvim-treesitter/nvim-treesitter
 require('nvim-treesitter.configs').setup({
-	ensure_installed = { 'go', 'lua', 'rust', 'zig', 'html', 'css', 'javascript', 'typescript', 'jsdoc'},
+	ensure_installed = { 'go', 'lua', 'rust', 'zig', 'html', 'css', 'javascript', 'typescript', 'jsdoc', 'svelte', 'tsx'},
 	highlight = {
 		enable = true,
 		disable = function(lang, bufnr)
@@ -105,3 +105,5 @@ function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
 	opts.border = opts.border or "rounded"
 	return orig_util_open_floating_preview(contents, syntax, opts, ...)
 end
+
+require('telescope').setup{ defaults = { file_ignore_patterns = {"node_modules"} } }

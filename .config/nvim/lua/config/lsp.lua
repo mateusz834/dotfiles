@@ -66,6 +66,13 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 require('lspconfig').html.setup({
 	capabilities = capabilities,
 	cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-html-language-server", "--stdio"},
+	settings = {
+        html = {
+            format = {
+                wrapAttributes = "preserve-aligned"
+            }
+        }
+    },
     on_attach = function(client, bufnr)
 		require('config.keymap').html_on_attach(client, bufnr)
 		global_on_attach(bufnr)

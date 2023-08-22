@@ -6,13 +6,10 @@ set('n', '<leader>ff', ':Telescope find_files<Enter>')
 set('n', '<leader>fg', ':Telescope live_grep<Enter>')
 set('n', '<leader>fb', ':Telescope buffers<Enter>')
 
-set('n', '<leader>tn', ':tabnew<Enter>')
 set('n', '<leader>fe', ':Ex<Enter>')
-set('n', '<leader>h', ':noh<Enter>')
 
---move current line up/down
-set('n', '<c-J>', ':m +1<Enter>')
-set('n', '<c-K>', ':m -2<Enter>')
+set("n", "<C-n>", ":cnext<CR>zz")
+set("n", "<C-p>", ":cprev<CR>zz")
 
 -- center when moving
 set('n', '<c-d>', '<c-d>zz')

@@ -8,6 +8,8 @@ set('n', '<leader>fb', ':Telescope buffers<Enter>')
 
 set('n', '<leader>fe', ':Ex<Enter>')
 
+set('n', '<leader>ut', ':UndotreeToggle<Enter>')
+
 set("n", "<C-n>", ":cnext<CR>zz")
 set("n", "<C-p>", ":cprev<CR>zz")
 

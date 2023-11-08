@@ -69,7 +69,8 @@ require('lspconfig').html.setup({
 	settings = {
         html = {
             format = {
-                wrapAttributes = "preserve-aligned"
+                wrapAttributes = "preserve-aligned",
+				wrapLineLength = 1000000000000
             }
         }
     },
@@ -174,7 +175,6 @@ require('go').setup({
 	end,
 	lsp_keymaps = false,
 	gopls_cmd = { 'gopls',  '-remote.listen.timeout=15s'},
-	lsp_diag_virtual_text = { prefix = "●" },
 })
 
 vim.api.nvim_create_autocmd({ 'BufWritePre' }, {

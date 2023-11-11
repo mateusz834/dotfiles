@@ -1,13 +1,13 @@
-function global_on_attach(bufnr)
-	require('lsp_signature').on_attach({},bufnr)
+function global_on_attach(lang, client, bufnr)
+	require('config.keymap').on_attach(lang, client, bufnr)
+	require('lsp_signature').on_attach(client, bufnr)
 end
 
 -- Javascript/Typescript
 require('lspconfig').tsserver.setup({
 	cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/typescript-language-server", "--stdio"},
 	on_attach = function(client, bufnr)
-		require('config.keymap').js_on_attach(client, bufnr)
-		global_on_attach(bufnr)
+		global_on_attach("typescript", client, bufnr)
 		local conf = {
 			format = {
 				semicolons = 'insert'
@@ -24,8 +24,7 @@ require('lspconfig').tsserver.setup({
 require'lspconfig'.eslint.setup({
 	cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-eslint-language-server", "--stdio"},
     on_attach = function(client, bufnr)
-		require('config.keymap').js_on_attach(client, bufnr)
-		global_on_attach(bufnr)
+		global_on_attach("eslint", client, bufnr)
     end,
 })
 
@@ -75,8 +74,7 @@ require('lspconfig').html.setup({
         }
     },
     on_attach = function(client, bufnr)
-		require('config.keymap').html_on_attach(client, bufnr)
-		global_on_attach(bufnr)
+		global_on_attach("html", client, bufnr)
     end,
 })
 
@@ -92,16 +90,14 @@ require('lspconfig').cssls.setup({
 	capabilities = capabilities,
 	cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-css-language-server", "--stdio"},
     on_attach = function(client, bufnr)
-		require('config.keymap').css_on_attach(client, bufnr)
-		global_on_attach(bufnr)
+		global_on_attach("css", client, bufnr)
     end,
 })
 
 -- Zig
 require('lspconfig').zls.setup({
     on_attach = function(client, bufnr)
-		require('config.keymap').zig_on_attach(client, bufnr)
-		global_on_attach(bufnr)
+		global_on_attach("zig", client, bufnr)
     end,
 })
 
@@ -129,8 +125,7 @@ require("rust-tools").setup({
 	},
 	cmd = { "rustup", "run", "stable", "rust-analyzer" },
     on_attach = function(client, bufnr)
-		require('config.keymap').rust_on_attach(client, bufnr)
-		global_on_attach(bufnr)
+		global_on_attach("rust", client, bufnr)
     end,
   },
 })
@@ -170,8 +165,7 @@ require('go').setup({
 		other_hints_prefix = "▬▶",
 	},
 	lsp_on_client_start = function (client, bufnr)
-		require('config.keymap').go_on_attach(client, bufnr)
-		global_on_attach(bufnr)
+		global_on_attach("go", client, bufnr)
 	end,
 	lsp_keymaps = false,
 	gopls_cmd = { 'gopls',  '-remote.listen.timeout=15s'},

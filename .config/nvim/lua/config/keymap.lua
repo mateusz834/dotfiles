@@ -48,7 +48,7 @@ vim.api.nvim_set_keymap("n", "gR", "<cmd>Trouble lsp_references<cr>",
   {silent = true, noremap = true}
 )
 
-on_attach = function(client, bufnr)
+function on_lsp_attach(lang, client, bufnr)
 	local bufopts = { noremap=true, silent=true, buffer=bufnr }
 	set('n', 'gd', vim.lsp.buf.definition, bufopts)
 	set('n', 'K', vim.lsp.buf.hover, bufopts)
@@ -58,42 +58,19 @@ on_attach = function(client, bufnr)
 	set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
 	set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
 	set('n', 'gr', vim.lsp.buf.references, bufopts)
+
+	if lang == "go" then
+		set('n', '<space>f', function() require('go.format').goimport() end, bufopts)
+		set('n', '<space>cl', ':GoCodeLenAct<Enter>', bufopts)
+		set('n', '<space>gc', function()
+			vim.lsp.buf.execute_command({
+				command = 'gopls.toggle_gc_details',
+				arguments = { { URI = vim.uri_from_bufnr(0) } }
+			})
+		end, bufopts)
+	end
 end
 
-local M = {}
-M.go_on_attach = function(client, bufnr)
-	on_attach(client, bufnr)
-
-	local bufopts = { noremap=true, silent=true, buffer=bufnr }
-	set('n', '<space>f', function() require('go.format').goimport() end, bufopts)
-	set('n', '<space>cl', ':GoCodeLenAct<Enter>', bufopts)
-	set('n', '<space>gc', function()
-		vim.lsp.buf.execute_command({
-			command = 'gopls.toggle_gc_details',
-			arguments = { { URI = vim.uri_from_bufnr(0) } }
-		})
-	end, bufopts)
-end
-
-M.rust_on_attach = function(client, bufnr)
-	on_attach(client, bufnr)
-end
-
-M.zig_on_attach= function(client, bufnr)
-	on_attach(client, bufnr)
-end
-
-M.html_on_attach= function(client, bufnr)
-	on_attach(client, bufnr)
-end
-
-M.css_on_attach= function(client, bufnr)
-	on_attach(client, bufnr)
-end
-
-M.js_on_attach= function(client, bufnr)
-	on_attach(client, bufnr)
-end
-
-return M
-
+return {
+	on_attach = on_lsp_attach
+}

@@ -102,3 +102,6 @@ function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
 end
 
 require('telescope').setup{ defaults = { file_ignore_patterns = {"node_modules"} } }
+
+vim.opt.undodir = os.getenv("HOME") .. "/.local/share/nvim-undotree"
+vim.opt.undofile = true

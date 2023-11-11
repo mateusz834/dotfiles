@@ -48,11 +48,6 @@ g.mapleader=' '
 -- folke/tokyonight.nvim
 cmd('colorscheme tokyonight-night')
 
--- simeji/winresizer
-g.winresizer_vert_resize=2
-g.winresizer_horiz_resize=2
-g.winresizer_start_key='' --binding removed here so, that i have it explicit in kaymap fils
-
 -- folke/todo-comments.nvim
 require("todo-comments").setup({
 	highlight = {

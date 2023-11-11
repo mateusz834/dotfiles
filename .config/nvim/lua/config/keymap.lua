@@ -1,7 +1,5 @@
 local set = vim.keymap.set
 
-set('n', '<C-e>', ':WinResizerStartResize<Enter>')
-
 set('n', '<leader>ff', ':Telescope find_files<Enter>')
 set('n', '<leader>fg', ':Telescope live_grep<Enter>')
 set('n', '<leader>fb', ':Telescope buffers<Enter>')

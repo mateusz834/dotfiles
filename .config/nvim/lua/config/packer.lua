@@ -1,7 +1,6 @@
 require('packer').startup(function(use)
 	use 'wbthomason/packer.nvim'
 	use 'folke/tokyonight.nvim'
-	use 'simeji/winresizer'
 	use {
 		'nvim-telescope/telescope.nvim',
 		requires = { {'nvim-lua/plenary.nvim'} }

@@ -1,0 +1,22 @@
+[$Version]
+update_info=okular.upd:annotation-toolbar,okular.upd:builtin-annotations
+
+[Dlg Accessibility]
+BWThreshold=113
+RecolorBackground=42,42,42
+RecolorForeground=255,255,255
+
+[Document]
+ChangeColors=true
+RenderMode=Recolor
+
+[Main View]
+SplitterSizes=338,1581
+
+[PageView]
+MouseMode=TextSelect
+
+[Reviews]
+AnnotationContinuousMode=false
+BuiltinAnnotationTools=<tool id="1" type="highlight" name="Yellow Highlighter"><engine type="TextSelector" color="#ffff00"><annotation type="Highlight" color="#ffffff00"/></engine></tool>,<tool id="2" type="underline"><engine type="TextSelector" color="#ff0000"><annotation type="Underline" color="#ffff0000"/></engine></tool>,<tool id="3" type="squiggly"><engine type="TextSelector" color="#ff0000"><annotation type="Squiggly" color="#ffff0000"/></engine></tool>,<tool id="4" type="strikeout"><engine type="TextSelector" color="#ff0000"><annotation type="StrikeOut" color="#ffff0000"/></engine></tool>,<tool id="5" type="typewriter"><engine type="PickPoint" block="true"><annotation font="Noto Sans\\\\\\\\\\,10\\\\\\\\\\,-1\\\\\\\\\\,5\\\\\\\\\\,50\\\\\\\\\\,0\\\\\\\\\\,0\\\\\\\\\\,0\\\\\\\\\\,0\\\\\\\\\\,0\\\\\\\\\\,Regular" type="Typewriter" width="0" textColor="#000000" color="#00ffffff"/></engine></tool>,<tool id="6" type="note-inline"><engine type="PickPoint" block="true" hoverIcon="tool-note-inline" color="#ffff00"><annotation font="Noto Sans\\\\\\\\\\,10\\\\\\\\\\,-1\\\\\\\\\\,5\\\\\\\\\\,50\\\\\\\\\\,0\\\\\\\\\\,0\\\\\\\\\\,0\\\\\\\\\\,0\\\\\\\\\\,0\\\\\\\\\\,Regular" type="FreeText" color="#ffffff00"/></engine></tool>,<tool id="7" type="note-linked"><engine type="PickPoint" hoverIcon="tool-note" color="#ffff00"><annotation type="Text" color="#ffffff00" icon="Note"/></engine></tool>,<tool id="8" type="ink"><engine type="SmoothLine" color="#00ff00"><annotation type="Ink" width="2" color="#ff00ff00"/></engine></tool>,<tool id="9" type="straight-line" name="Arrow"><engine type="PolyLine" points="2" color="#000000"><annotation type="Line" endStyle="3" width="2" color="#ff000000"/></engine></tool>,<tool id="10" type="straight-line"><engine type="PolyLine" points="2" color="#000000"><annotation type="Line" width="2" color="#ff000000"/></engine></tool>,<tool id="11" type="rectangle"><engine type="PickPoint" block="true" color="#ff0000"><annotation type="GeomSquare" width="3" color="#ffff0000"/></engine></tool>,<tool id="12" type="ellipse"><engine type="PickPoint" block="true" color="#00ffff"><annotation type="GeomCircle" width="3" color="#ff00ffff"/></engine></tool>,<tool id="13" type="polygon"><engine type="PolyLine" points="-1" color="#007eee"><annotation type="Line" width="2" color="#ff007eee"/></engine></tool>,<tool id="14" type="stamp"><engine type="PickPoint" size="64" block="true" hoverIcon="Approved"><annotation type="Stamp" icon="Approved"/></engine></tool>
+QuickAnnotationTools=<tool default="true" id="1" type="highlight" name="Yellow Highlighter"><engine color="#ffff00" type="TextSelector"><annotation color="#ffffff00" type="Highlight"/></engine><shortcut>1</shortcut></tool>,<tool default="true" id="2" type="highlight" name="Green Highlighter"><engine color="#00ff00" type="TextSelector"><annotation color="#ff00ff00" type="Highlight"/></engine><shortcut>2</shortcut></tool>,<tool id="3" type="underline"><engine color="#ff0000" type="TextSelector"><annotation color="#ffff0000" type="Underline"/></engine><shortcut>3</shortcut></tool>,<tool default="true" id="4" type="typewriter" name="Insert Text"><engine block="true" type="PickPoint"><annotation color="#00ffffff" type="Typewriter" textColor="#000000" width="0"/></engine><shortcut>4</shortcut></tool>,<tool id="5" type="note-inline"><engine block="true" color="#ffff00" type="PickPoint" hoverIcon="tool-note-inline"><annotation color="#ffffff00" type="FreeText" textColor="#ff000000"/></engine><shortcut>5</shortcut></tool>,<tool id="6" type="note-linked"><engine color="#ffff00" type="PickPoint" hoverIcon="tool-note"><annotation color="#ffffff00" type="Text" icon="Note"/></engine><shortcut>6</shortcut></tool>

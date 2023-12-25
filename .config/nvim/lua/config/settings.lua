@@ -48,6 +48,9 @@ g.mapleader=' '
 -- folke/tokyonight.nvim
 cmd('colorscheme tokyonight-night')
 
+-- lighter line numbers
+cmd('hi LineNr guifg=#9c9c9c')
+
 -- folke/todo-comments.nvim
 require("todo-comments").setup({
 	highlight = {

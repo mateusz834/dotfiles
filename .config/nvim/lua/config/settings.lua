@@ -46,6 +46,11 @@ cmd('match ExtraWhitespace /\\s\\+$/')
 g.mapleader=' '
 
 -- folke/tokyonight.nvim
+require("tokyonight").setup({
+  on_colors = function(colors)
+	  colors.comment = '#9c9c9c'
+  end,
+})
 cmd('colorscheme tokyonight-night')
 
 -- lighter line numbers

@@ -43,6 +43,17 @@ vim.keymap.set('i', '<F1>', '<nop>')
 cmd('highlight ExtraWhitespace ctermbg=green guibg=green')
 cmd('match ExtraWhitespace /\\s\\+$/')
 
+-- Highlight when yanking (copying) text
+--  Try it with `yap` in normal mode
+--  See `:help vim.highlight.on_yank()`
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Highlight when yanking (copying) text',
+  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
+
 g.mapleader=' '
 
 -- folke/tokyonight.nvim

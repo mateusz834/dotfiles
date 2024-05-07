@@ -3,6 +3,70 @@ function global_on_attach(lang, client, bufnr)
 	require('lsp_signature').on_attach(client, bufnr)
 end
 
+require('lspconfig').templ.setup({
+    on_attach = function(client, bufnr)
+		global_on_attach("templ", client, bufnr)
+    end
+})
+
+-- Tailwind
+require('lspconfig').tailwindcss.setup({
+	cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/tailwindcss-language-server", "--stdio"},
+    on_attach = function(client, bufnr)
+		global_on_attach("tailwind", client, bufnr)
+    end,
+	settings = {
+		tailwindCSS = {
+			classAttributes = { "class", "className", "class:list", "classList", "ngClass" },
+			lint = {
+				cssConflict = "warning",
+				invalidApply = "error",
+				invalidConfigPath = "error",
+				invalidScreen = "error",
+				invalidTailwindDirective = "error",
+				invalidVariant = "error",
+				recommendedVariantOrder = "warning"
+			},
+			validate = true,
+			experimental = {
+				classRegex = {
+					-- https://github.com/paolotiu/tailwind-intellisense-regex-list#DOM
+					"classList.(?:add|remove)\\(([^)]*)\\)", "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"
+				},
+			},
+		}
+	}
+})
+
+-- Python
+require('lspconfig').pyright.setup({
+    on_attach = function(client, bufnr)
+		global_on_attach("python", client, bufnr)
+    end,
+})
+
+vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+	pattern = {'*.py'},
+	callback = function()
+		 vim.lsp.buf.format({async=false})
+	end
+})
+
+-- Svelte
+require('lspconfig').svelte.setup({
+	cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/svelteserver", "--stdio"},
+    on_attach = function(client, bufnr)
+		global_on_attach("svelte", client, bufnr)
+    end,
+})
+
+vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+	pattern = {'*.svelte'},
+	callback = function()
+		 vim.lsp.buf.format({async=false})
+	end,
+})
+
 -- Javascript/Typescript
 require('lspconfig').tsserver.setup({
 	cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/typescript-language-server", "--stdio"},

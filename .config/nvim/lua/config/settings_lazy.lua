@@ -1,36 +1,34 @@
-local set = vim.opt
-local cmd = vim.cmd
-local g = vim.g
+vim.g.mapleader=' '
 
-set.number=true
-set.scrolloff=3
-set.relativenumber=true
+vim.opt.number=true
+vim.opt.scrolloff=3
+vim.opt.relativenumber=true
 
 -- use fsync when saving files.
 -- to preserve files after system crash.
-set.fsync = true;
+vim.opt.fsync = true;
 
-set.ignorecase=true
+vim.opt.ignorecase=true
 --set.wrapscan=false
 
-set.clipboard=unnamedplus
+vim.opt.clipboard=unnamedplus
 
 vim.api.nvim_create_autocmd('FileType', {
 	pattern = { "*" },
 	callback = function(args)
-		set.smartindent = true
+		vim.opt.smartindent = true
 
 		local ft = vim.bo[args.buf].filetype
 		if ft == "javascript" or ft == "typescript" then
-			set.tabstop = 2
-			set.shiftwidth = 2
-			set.softtabstop = 2
-			set.expandtab = true --replace tab with spaces
+			vim.opt.tabstop = 2
+			vim.opt.shiftwidth = 2
+			vim.opt.softtabstop = 2
+			vim.opt.expandtab = true --replace tab with spaces
 		else
-			set.tabstop = 4
-			set.shiftwidth = 4
-			set.softtabstop = 4
-			set.expandtab = false --replace tab with spaces
+			vim.opt.tabstop = 4
+			vim.opt.shiftwidth = 4
+			vim.opt.softtabstop = 4
+			vim.opt.expandtab = false --replace tab with spaces
 		end
 	end
 })
@@ -40,8 +38,8 @@ vim.keymap.set('n', '<F1>', '<nop>')
 vim.keymap.set('i', '<F1>', '<nop>')
 
 -- higlight trailing spaces
-cmd('highlight ExtraWhitespace ctermbg=green guibg=green')
-cmd('match ExtraWhitespace /\\s\\+$/')
+vim.cmd('highlight ExtraWhitespace ctermbg=green guibg=green')
+vim.cmd('match ExtraWhitespace /\\s\\+$/')
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
@@ -54,46 +52,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
-g.mapleader=' '
-
--- folke/tokyonight.nvim
-require("tokyonight").setup({
-  on_colors = function(colors)
-	  colors.comment = '#9c9c9c'
-  end,
-})
-cmd('colorscheme tokyonight-night')
-
--- lighter line numbers
-cmd('hi LineNr guifg=#9c9c9c')
-
--- folke/todo-comments.nvim
-require("todo-comments").setup({
-	highlight = {
-		before = "fg",
-		keyword = "fg",
-		pattern = [[.*<(KEYWORDS)\s*]],
-	},
-	search = {
-		pattern = [[\b(KEYWORDS)\b]],
-	},
-})
-
--- folke/trouble.nvim
-require("trouble").setup({})
-
--- nvim-treesitter/nvim-treesitter
-require('nvim-treesitter.configs').setup({
-	ensure_installed = { 'go', 'lua', 'rust', 'zig', 'html', 'css', 'javascript', 'typescript', 'jsdoc', 'svelte', 'tsx', 'python', 'sql', 'templ' },
-	highlight = {
-		enable = true,
-		disable = function(lang, bufnr)
-			if lang == "go" and vim.api.nvim_buf_line_count(bufnr) > 1000 then
-				return true
-			end
-		end
-	},
-})
 
 function set_read_only(dir)
 	vim.api.nvim_create_autocmd({ 'BufReadPost' }, {
@@ -120,13 +78,20 @@ function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
 	return orig_util_open_floating_preview(contents, syntax, opts, ...)
 end
 
-require('telescope').setup{ defaults = { file_ignore_patterns = {"node_modules"} } }
-
 vim.opt.undodir = os.getenv("HOME") .. "/.local/share/nvim-undotree"
 vim.opt.undofile = true
 
-vim.filetype.add({
-    extension = {
-        templ = "templ",
-    },
-})
+vim.keymap.set('n', '<leader>fe', ':Ex<Enter>')
+
+vim.keymap.set("n", "<C-n>", ":cnext<CR>zz")
+vim.keymap.set("n", "<C-p>", ":cprev<CR>zz")
+
+-- center when moving
+vim.keymap.set('n', '<c-d>', '<c-d>zz')
+vim.keymap.set('n', '<c-u>', '<c-u>zz')
+
+local opts = { noremap=true, silent=true }
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)

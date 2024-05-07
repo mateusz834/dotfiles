@@ -1,6 +1,2 @@
-require('config.settings_lazy')
+require('config.settings')
 require('config.lazy')
---require('config.packer')
---require('config.settings')
---require('config.keymap')
---require('config.lsp')

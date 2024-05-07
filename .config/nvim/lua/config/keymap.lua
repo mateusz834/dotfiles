@@ -1,8 +1,11 @@
 local set = vim.keymap.set
 
-set('n', '<leader>ff', ':Telescope find_files<Enter>')
-set('n', '<leader>fg', ':Telescope live_grep<Enter>')
-set('n', '<leader>fb', ':Telescope buffers<Enter>')
+local builtin = require('telescope.builtin')
+local utils = require('telescope.utils')
+set('n', '<leader>ff', builtin.find_files, {})
+set('n', '<leader>fg', builtin.live_grep, {})
+set('n', '<leader>df', function() builtin.find_files({ cwd = utils.buffer_dir() }) end)
+set('n', '<leader>dg', function() builtin.live_grep({ cwd = utils.buffer_dir() }) end)
 
 set('n', '<leader>fe', ':Ex<Enter>')
 

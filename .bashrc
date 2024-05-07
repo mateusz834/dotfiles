@@ -8,16 +8,17 @@
 alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
 
-source /usr/share/git/completion/git-prompt.sh
-export PS1='[\u@\h \W $(__git_ps1 "(%s)")]\$ '
+if  [ -f /usr/share/git/completion/git-prompt.sh ]; then
+	# TODO: also source the debian file locaiton
+	source /usr/share/git/completion/git-prompt.sh
+	export PS1='[\u@\h \W $(__git_ps1 "(%s)")]\$ '
+fi
 
 export HISTSIZE=10000
 export HISTFILESIZE=10000
 # To avoid saving consecutive identical commands, and commands that start with a space:
 export HISTCONTROL=ignoreboth
 
-alias gitlog="git log --decorate --all --oneline --graph"
-alias gits="git status"
 alias grep='grep --color'
 alias ip='ip -c'
 

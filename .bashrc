@@ -9,8 +9,10 @@ alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
 
 if  [ -f /usr/share/git/completion/git-prompt.sh ]; then
-	# TODO: also source the debian file locaiton
 	source /usr/share/git/completion/git-prompt.sh
+	export PS1='[\u@\h \W $(__git_ps1 "(%s)")]\$ '
+elif [ -f /etc/bash_completion.d/git-prompt ]; then
+	source /etc/bash_completion.d/git-prompt
 	export PS1='[\u@\h \W $(__git_ps1 "(%s)")]\$ '
 fi
 

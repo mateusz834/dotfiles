@@ -30,7 +30,6 @@ require("lazy").setup({
 	},
 	{
 		"nvim-telescope/telescope.nvim",
-		tag = "0.1.6",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = function()
 			require("telescope").setup({
@@ -109,7 +108,7 @@ require("lazy").setup({
 			'hrsh7th/cmp-buffer',
 			'hrsh7th/cmp-path',
 			'hrsh7th/nvim-cmp',
-			--'L3MON4D3/LuaSnip',
+			'L3MON4D3/LuaSnip',
 			'ray-x/lsp_signature.nvim',
 		},
 		config = function()
@@ -248,6 +247,7 @@ require("lazy").setup({
 				end,
 			})
 
+
 			-- Go
 			require('lspconfig').gopls.setup({
 				cmd = { 'gopls',  '-remote.listen.timeout=15s'},
@@ -264,6 +264,7 @@ require("lazy").setup({
 						staticcheck = true,
 					},
 				},
+				capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
 			    on_attach = function(client, bufnr)
 					global_on_attach("go", client, bufnr)
 			    end,

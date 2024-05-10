@@ -158,36 +158,36 @@ require("lazy").setup({
 
 			require('lspconfig').eslint.setup({
 				cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-eslint-language-server", "--stdio"},
-			    on_attach = function(client, bufnr)
+				on_attach = function(client, bufnr)
 					global_on_attach("eslint", client, bufnr)
-			    end,
+				end,
 			})
 
 			vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
 				pattern = {'*.js'},
 				callback = function()
-					 vim.lsp.buf.format({async=false})
+					vim.lsp.buf.format({async=false})
 				end,
 			})
 
 			vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
 				pattern = {'*.jsx'},
 				callback = function()
-					 vim.lsp.buf.format({async=false})
+					vim.lsp.buf.format({async=false})
 				end,
 			})
 
 			vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
 				pattern = {'*.ts'},
 				callback = function()
-					 vim.lsp.buf.format({async=false})
+					vim.lsp.buf.format({async=false})
 				end,
 			})
 
 			vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
 				pattern = {'*.tsx'},
 				callback = function()
-					 vim.lsp.buf.format({async=false})
+					vim.lsp.buf.format({async=false})
 				end,
 			})
 
@@ -201,22 +201,22 @@ require("lazy").setup({
 				capabilities = capabilities,
 				cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-html-language-server", "--stdio"},
 				settings = {
-			        html = {
-			            format = {
-			                wrapAttributes = "preserve-aligned",
+					html = {
+						format = {
+							wrapAttributes = "preserve-aligned",
 							wrapLineLength = 1000000000000
-			            }
-			        }
-			    },
-			    on_attach = function(client, bufnr)
+						}
+					}
+				},
+				on_attach = function(client, bufnr)
 					global_on_attach("html", client, bufnr)
-			    end,
+				end,
 			})
 
 			vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
 				pattern = {'*.html'},
 				callback = function()
-					 vim.lsp.buf.format({async=false})
+					vim.lsp.buf.format({async=false})
 				end,
 			})
 
@@ -224,16 +224,16 @@ require("lazy").setup({
 			require('lspconfig').cssls.setup({
 				capabilities = capabilities,
 				cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-css-language-server", "--stdio"},
-			    on_attach = function(client, bufnr)
+				on_attach = function(client, bufnr)
 					global_on_attach("css", client, bufnr)
-			    end,
+				end,
 			})
 
 			-- Zig
 			require('lspconfig').zls.setup({
-			    on_attach = function(client, bufnr)
+				on_attach = function(client, bufnr)
 					global_on_attach("zig", client, bufnr)
-			    end,
+				end,
 			})
 
 			vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
@@ -265,9 +265,9 @@ require("lazy").setup({
 					},
 				},
 				capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
-			    on_attach = function(client, bufnr)
+				on_attach = function(client, bufnr)
 					global_on_attach("go", client, bufnr)
-			    end,
+				end,
 			})
 
 			-- https://github.com/golang/tools/blob/master/gopls/doc/vim.md#imports-and-formatting
@@ -283,12 +283,12 @@ require("lazy").setup({
 					-- E.g., vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
 					local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params)
 					for cid, res in pairs(result or {}) do
-					  for _, r in pairs(res.result or {}) do
-					    if r.edit then
-					      local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
-					      vim.lsp.util.apply_workspace_edit(r.edit, enc)
-					    end
-					  end
+						for _, r in pairs(res.result or {}) do
+							if r.edit then
+								local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
+								vim.lsp.util.apply_workspace_edit(r.edit, enc)
+							end
+						end
 					end
 					vim.lsp.buf.format({async = false})
 				end,
@@ -309,45 +309,45 @@ require("lazy").setup({
 			-- nvim-cmp setup
 			local cmp = require('cmp')
 			cmp.setup {
-			  snippet = {
-			    expand = function(args)
-			      luasnip.lsp_expand(args.body)
-			    end,
-			  },
-			  mapping = cmp.mapping.preset.insert({
-			    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-			    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-			    ['<C-Space>'] = cmp.mapping.complete(),
-			    ['<CR>'] = cmp.mapping.confirm {
-			      behavior = cmp.ConfirmBehavior.Replace,
-			      select = true,
-			    },
-			    ['<Tab>'] = cmp.mapping(function(fallback)
-			      if cmp.visible() then
-			        cmp.select_next_item()
-			      elseif luasnip.expand_or_jumpable() then
-			        luasnip.expand_or_jump()
-			      else
-			        fallback()
-			      end
-			    end, { 'i', 's' }),
-			    ['<S-Tab>'] = cmp.mapping(function(fallback)
-			      if cmp.visible() then
-			        cmp.select_prev_item()
-			      elseif luasnip.jumpable(-1) then
-			        luasnip.jump(-1)
-			      else
-			        fallback()
-			      end
-			    end, { 'i', 's' }),
-			  }),
-			  sources = {
-			    { name = 'nvim_lsp' },
-			    { name = 'luasnip' },
-			    { name = 'path' },
-			    { name = 'buffer' },
-			  }
-		  }
+				snippet = {
+					expand = function(args)
+						luasnip.lsp_expand(args.body)
+					end,
+				},
+				mapping = cmp.mapping.preset.insert({
+					['<C-d>'] = cmp.mapping.scroll_docs(-4),
+					['<C-f>'] = cmp.mapping.scroll_docs(4),
+					['<C-Space>'] = cmp.mapping.complete(),
+					['<CR>'] = cmp.mapping.confirm {
+						behavior = cmp.ConfirmBehavior.Replace,
+						select = true,
+					},
+					['<Tab>'] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.select_next_item()
+						elseif luasnip.expand_or_jumpable() then
+							luasnip.expand_or_jump()
+						else
+							fallback()
+						end
+					end, { 'i', 's' }),
+					['<S-Tab>'] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.select_prev_item()
+						elseif luasnip.jumpable(-1) then
+							luasnip.jump(-1)
+						else
+							fallback()
+						end
+					end, { 'i', 's' }),
+				}),
+				sources = {
+					{ name = 'nvim_lsp' },
+					{ name = 'luasnip' },
+					{ name = 'path' },
+					{ name = 'buffer' },
+				}
+			}
 		end
 	}
 })

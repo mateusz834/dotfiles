@@ -9,7 +9,7 @@ export GOPATH="$HOME/go"
 export GOBIN="$GOPATH/bin"
 
 # if WSL2
-if [ -n "${WSL_DISTRO_NAM}" ]; then
+if [[ $WSL_DISTRO_NAME ]]; then
 	# WLS2 has a bunch of folders in $PATH, which cause slow nvim start.
 	export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/home/mateusz/.dotnet/tools"
 	export PATH="$HOME/.local/share/nvim/mason/bin:$PATH"

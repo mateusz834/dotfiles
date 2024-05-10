@@ -11,7 +11,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local isWSL = os.getenv("WSL_DISTRO_NAME") ~= ""
+local isWSL = os.getenv("WSL_DISTRO_NAME") ~= null
 
 require("lazy").setup({
 	{

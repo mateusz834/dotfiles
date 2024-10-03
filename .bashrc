@@ -30,3 +30,5 @@ alias http-server='python3 -m http.server --bind 127.0.0.1'
 alias gitdotfiles='git --git-dir=$HOME/.local/share/git-dotfiles --work-tree=$HOME'
 
 alias act="act --container-daemon-socket $XDG_RUNTIME_DIR/podman/podman.sock"
+
+set -o vi

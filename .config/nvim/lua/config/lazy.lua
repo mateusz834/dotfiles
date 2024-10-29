@@ -57,7 +57,8 @@ require("lazy").setup({
 					show_hidden = true,
 				},
 			})
-			vim.keymap.set("n", "<leader>o", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+			vim.keymap.set("n", "<leader>o", function() require("oil").open() end)
+			vim.keymap.set("n", "<leader>O", function() require("oil").open(vim.fn.getcwd()) end)
 		end
 	},
 	{

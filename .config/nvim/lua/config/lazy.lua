@@ -15,20 +15,20 @@ local isWSL = os.getenv("WSL_DISTRO_NAME") ~= null
 
 require("lazy").setup({
 	{
-	  "folke/tokyonight.nvim",
-	  lazy = false,
-	  priority = 1000,
-	  opts = {},
-	  config = function()
-		require("tokyonight").setup({
-		  on_colors = function(colors)
-			  colors.comment = '#9c9c9c'
-		  end,
-		})
-		vim.cmd('colorscheme tokyonight-night')
-		-- lighter line numbers
-		vim.cmd('hi LineNr guifg=#9c9c9c')
-	  end
+		"folke/tokyonight.nvim",
+		lazy = false,
+		priority = 1000,
+		opts = {},
+		config = function()
+			require("tokyonight").setup({
+				on_colors = function(colors)
+					colors.comment = '#9c9c9c'
+				end,
+			})
+			vim.cmd('colorscheme tokyonight-night')
+			-- lighter line numbers
+			vim.cmd('hi LineNr guifg=#9c9c9c')
+		end
 	},
 	{
 		"nvim-telescope/telescope.nvim",
@@ -47,19 +47,45 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>dg", function() builtin.live_grep({ cwd = utils.buffer_dir() }) end)
 		end
 
-    },
+	},
+	{
+		'stevearc/oil.nvim',
+		dependencies = { { "echasnovski/mini.icons", opts = {} } },
+		config = function()
+			require("oil").setup({
+				view_options = {
+					show_hidden = true,
+				},
+			})
+			vim.keymap.set("n", "<leader>o", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+		end
+	},
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		config = function()
 			require('nvim-treesitter.configs').setup({
-				ensure_installed = { 'go', 'lua', 'rust', 'zig', 'html', 'css', 'javascript', 'typescript', 'jsdoc', 'svelte', 'tsx', 'python', 'sql' },
+				ensure_installed = {
+					'go',
+					'lua',
+					'rust',
+					'zig',
+					'html',
+					'css',
+					'javascript',
+					'typescript',
+					'jsdoc',
+					'svelte',
+					'tsx',
+					'python',
+					'sql',
+				},
 				highlight = {
 					enable = true,
 					disable = function(lang, bufnr)
-						if lang == "go" and vim.api.nvim_buf_line_count(bufnr) > 1000 then
-							return true
-						end
+						--if lang == "go" and vim.api.nvim_buf_line_count(bufnr) > 3000 then
+						--	return true
+						--end
 					end
 				},
 			})
@@ -99,7 +125,7 @@ require("lazy").setup({
 	{
 		"mbbill/undotree",
 		config = function()
-	        vim.keymap.set("n", "<leader>ut", vim.cmd.UndotreeToggle)
+			vim.keymap.set("n", "<leader>ut", vim.cmd.UndotreeToggle)
 		end
 	},
 

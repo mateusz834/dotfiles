@@ -81,8 +81,6 @@ end
 vim.opt.undodir = os.getenv("HOME") .. "/.local/share/nvim-undotree"
 vim.opt.undofile = true
 
-vim.keymap.set('n', '<leader>fe', ':Ex<Enter>')
-
 vim.keymap.set("n", "<C-n>", ":cnext<CR>zz")
 vim.keymap.set("n", "<C-p>", ":cprev<CR>zz")
 

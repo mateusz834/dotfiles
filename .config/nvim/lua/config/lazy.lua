@@ -56,6 +56,7 @@ require("lazy").setup({
 				view_options = {
 					show_hidden = true,
 				},
+				watch_for_changes = true
 			})
 			vim.keymap.set("n", "<leader>o", function() require("oil").open() end)
 			vim.keymap.set("n", "<leader>O", function() require("oil").open(vim.fn.getcwd()) end)

@@ -169,6 +169,8 @@ require("lazy").setup({
 				vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
 				vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
 
+				vim.keymap.set({'v', 'n'}, '<space>a', vim.lsp.buf.code_action)
+
 				if lang == "go" then
 					vim.keymap.set('n', '<space>f', function() require('go.format').goimport() end, bufopts)
 					vim.keymap.set('n', '<space>cl', ':GoCodeLenAct<Enter>', bufopts)

@@ -358,7 +358,6 @@ require("lazy").setup({
 				settings = {
 					gopls = {
 						analyses = {
-							fieldalignment = true,
 							unusedwrite = true,
 							nilness = true,
 							useany = true,

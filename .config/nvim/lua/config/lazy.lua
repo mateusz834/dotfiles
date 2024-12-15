@@ -41,10 +41,21 @@ require("lazy").setup({
 			})
 			local builtin = require("telescope.builtin")
 			local utils = require("telescope.utils")
+
+			-- removeOilPrefix removes the "oil://" prefix from the buffer name,
+			-- so that df and dg keymaps work properly inside oil file tree.
+			local function removeOilPrefix(str)
+				local prefix = "oil://"
+				if string.sub(str, 1, #prefix) == prefix then
+					return string.sub(str, #prefix + 1)
+				end
+				return str
+			end
+
 			vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
 			vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
-			vim.keymap.set("n", "<leader>df", function() builtin.find_files({ cwd = utils.buffer_dir() }) end)
-			vim.keymap.set("n", "<leader>dg", function() builtin.live_grep({ cwd = utils.buffer_dir() }) end)
+			vim.keymap.set("n", "<leader>df", function() builtin.find_files({ cwd = removeOilPrefix(utils.buffer_dir()) }) end)
+			vim.keymap.set("n", "<leader>dg", function() builtin.live_grep({ cwd = removeOilPrefix(utils.buffer_dir()) }) end)
 		end
 
 	},

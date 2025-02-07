@@ -16,6 +16,9 @@ elif [ -f /etc/bash_completion.d/git-prompt ]; then
 	export PS1='[\u@\h \W $(__git_ps1 "(%s)")]\$ '
 fi
 
+bind -m vi-command '"\C-o": "\C-z\ec\C-z"'
+bind -m vi-insert '"\C-o": "\C-z\ec\C-z"'
+
 if  [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
 	source /usr/share/doc/fzf/examples/key-bindings.bash ]
 elif [ -f /usr/share/fzf/key-bindings.bash ]; then

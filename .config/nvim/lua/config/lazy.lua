@@ -166,12 +166,12 @@ require("lazy").setup({
 				local bufopts = { noremap=true, silent=true, buffer=bufnr }
 				if lang == "c#" then
 					vim.keymap.set('n', 'gd', require('omnisharp_extended').lsp_definition, bufopts)
-					vim.keymap.set('n', '<space>D', require('omnisharp_extended').lsp_type_definition, bufopts)
+					vim.keymap.set('n', 'gt', require('omnisharp_extended').lsp_type_definition, bufopts)
 					vim.keymap.set('n', 'gr', require('omnisharp_extended').lsp_references, bufopts)
 					vim.keymap.set('n', 'gi', require('omnisharp_extended').lsp_implementation, bufopts)
 				else
 					vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-					vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
+					vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, bufopts)
 					vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
 					vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
 				end

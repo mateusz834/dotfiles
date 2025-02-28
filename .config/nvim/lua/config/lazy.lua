@@ -252,6 +252,8 @@ require("lazy").setup({
 				})
 			end
 
+			require('lspconfig').typos_lsp.setup({})
+
 			-- Javascript/Typescript
 			require('lspconfig').tsserver.setup({
 				cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/typescript-language-server", "--stdio"},

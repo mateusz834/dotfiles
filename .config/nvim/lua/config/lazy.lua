@@ -104,7 +104,6 @@ require("lazy").setup({
 			})
 		end
 	},
-
 	{
 		"folke/todo-comments.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
@@ -121,7 +120,25 @@ require("lazy").setup({
 			})
 		end
 	},
-
+	{
+		"folke/flash.nvim",
+		keys = {
+			{ "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+		},
+		config = function()
+			require("flash").setup({
+				mode = "fuzzy",
+				modes = {
+					char = {
+						enabled = false,
+					},
+				},
+			})
+			-- Based on https://github.com/LazyVim/LazyVim/discussions/1313
+			vim.api.nvim_command("hi clear FlashLabel")
+			vim.api.nvim_command("hi FlashLabel guibg=#000000 guifg=#FFFFFF")
+		end
+	},
 	{
 		"ThePrimeagen/harpoon",
 		dependencies = { "nvim-lua/plenary.nvim" },
@@ -134,14 +151,12 @@ require("lazy").setup({
 			vim.keymap.set('n', "æ", function() require("harpoon.ui").nav_file(4) end, silent) -- Right Alt + f
 		end
 	},
-
 	{
 		"mbbill/undotree",
 		config = function()
 			vim.keymap.set("n", "<leader>ut", vim.cmd.UndotreeToggle)
 		end
 	},
-
 	{
 		"williamboman/mason.nvim",
 		cond = isWSL,
@@ -149,7 +164,6 @@ require("lazy").setup({
 			require("mason").setup()
 		end
 	},
-
 	{
 		'neovim/nvim-lspconfig',
 		dependencies = {
@@ -461,7 +475,7 @@ require("lazy").setup({
 					{ name = 'nvim_lsp' },
 					{ name = 'luasnip' },
 					{ name = 'path' },
-					{ name = 'buffer' },
+					{ name = 'buffer' }
 				}
 			}
 		end

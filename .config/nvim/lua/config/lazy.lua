@@ -181,6 +181,11 @@ require("lazy").setup({
 
 				vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 
+				vim.keymap.set({'v', 'n'}, '<space>a', vim.lsp.buf.code_action, bufopts)
+				if lang == "typos" then
+					return
+				end
+
 				if lang == "c#" then
 					vim.keymap.set('n', 'gd', require('omnisharp_extended').lsp_definition, bufopts)
 					vim.keymap.set('n', 'gt', require('omnisharp_extended').lsp_type_definition, bufopts)
@@ -196,8 +201,6 @@ require("lazy").setup({
 				vim.keymap.set('n', '<C-space>', vim.lsp.buf.signature_help, bufopts)
 				vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
 				vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
-
-				vim.keymap.set({'v', 'n'}, '<space>a', vim.lsp.buf.code_action, bufopts)
 
 				if lang == "go" then
 					vim.keymap.set('n', '<space>f', function() require('go.format').goimport() end, bufopts)

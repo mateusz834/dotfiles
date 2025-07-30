@@ -178,6 +178,9 @@ require("lazy").setup({
 		config = function()
 			function global_on_attach(lang, client, bufnr)
 				local bufopts = { noremap=true, silent=true, buffer=bufnr }
+
+				vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+
 				if lang == "c#" then
 					vim.keymap.set('n', 'gd', require('omnisharp_extended').lsp_definition, bufopts)
 					vim.keymap.set('n', 'gt', require('omnisharp_extended').lsp_type_definition, bufopts)
@@ -390,6 +393,9 @@ require("lazy").setup({
 							useany = true,
 							unusedparams = true,
 							shadow = true,
+						},
+						hints = {
+							ignoredError = true,
 						},
 						staticcheck = true,
 					},

@@ -272,6 +272,19 @@ require("lazy").setup({
 				})
 			end
 
+			require('lspconfig').pyright.setup({
+				on_attach = function(client, bufnr)
+					global_on_attach("python", client, bufnr)
+				end,
+			})
+
+			vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+				pattern = {'*.py'},
+				callback = function()
+					vim.lsp.buf.format({async=false})
+				end,
+			})
+
 			require('lspconfig').typos_lsp.setup({
 				on_attach = function(client, bufnr)
 					global_on_attach("typos", client, bufnr)

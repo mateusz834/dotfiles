@@ -3,3 +3,5 @@
 	name = Mateusz Poliwczak
 [init]
 	defaultbranch = main
+[commit]
+	verbose = true

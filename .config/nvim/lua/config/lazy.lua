@@ -272,7 +272,11 @@ require("lazy").setup({
 				})
 			end
 
-			require('lspconfig').typos_lsp.setup({})
+			require('lspconfig').typos_lsp.setup({
+				on_attach = function(client, bufnr)
+					global_on_attach("typos", client, bufnr)
+				end,
+			})
 
 			-- Javascript/Typescript
 			require('lspconfig').tsserver.setup({

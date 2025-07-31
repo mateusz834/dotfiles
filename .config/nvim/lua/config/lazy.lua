@@ -176,17 +176,17 @@ require("lazy").setup({
 			{'Hoffs/omnisharp-extended-lsp.nvim', cond = isWSL},
 		},
 		config = function()
-			function global_on_attach(lang, client, bufnr)
+			function global_on_attach(lsp, client, bufnr)
 				local bufopts = { noremap=true, silent=true, buffer=bufnr }
 
 				vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 
 				vim.keymap.set({'v', 'n'}, '<space>a', vim.lsp.buf.code_action, bufopts)
-				if lang == "typos" then
+				if lsp == "typos_lsp" then
 					return
 				end
 
-				if lang == "c#" then
+				if lsp == "omnisharp" then
 					vim.keymap.set('n', 'gd', require('omnisharp_extended').lsp_definition, bufopts)
 					vim.keymap.set('n', 'gt', require('omnisharp_extended').lsp_type_definition, bufopts)
 					vim.keymap.set('n', 'gr', require('omnisharp_extended').lsp_references, bufopts)
@@ -202,7 +202,7 @@ require("lazy").setup({
 				vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
 				vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
 
-				if lang == "go" then
+				if lsp == "gopls" then
 					vim.keymap.set('n', '<space>f', function() require('go.format').goimport() end, bufopts)
 					vim.keymap.set('n', '<space>cl', ':GoCodeLenAct<Enter>', bufopts)
 					vim.keymap.set('n', '<space>gc', function()
@@ -261,8 +261,101 @@ require("lazy").setup({
 				end,
 			})
 
+			vim.lsp.config("gopls", {
+				cmd = { 'gopls',  '-remote.listen.timeout=15s'},
+				settings = {
+					gopls = {
+						analyses = {
+							unusedwrite = true,
+							nilness = true,
+							useany = true,
+							unusedparams = true,
+							shadow = true,
+						},
+						hints = {
+							ignoredError = true,
+						},
+						staticcheck = true,
+					},
+				},
+				capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+				on_attach = function(client, bufnr)
+					global_on_attach("gopls", client, bufnr)
+				end,
+			})
+			vim.lsp.enable("gopls")
+
+			vim.lsp.config("ts_ls", {
+				cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/typescript-language-server", "--stdio"},
+				on_attach = function(client, bufnr)
+					global_on_attach("tsserver", client, bufnr)
+					local conf = {
+						format = {
+							semicolons = 'insert'
+						}
+					}
+					client.notify('workspace/didChangeConfiguration', {
+						settings = {
+							typescript = conf,
+							javascript = conf,
+						}
+					})
+				end,
+			})
+			vim.lsp.enable("ts_ls")
+
+			vim.lsp.config("eslint", {
+				cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-eslint-language-server", "--stdio"},
+				on_attach = function(client, bufnr)
+					global_on_attach("eslint", client, bufnr)
+				end,
+			})
+			vim.lsp.enable("eslint")
+
+			local capabilities = vim.lsp.protocol.make_client_capabilities()
+			capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+			vim.lsp.config("html", {
+				capabilities = capabilities,
+				cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-html-language-server", "--stdio"},
+				settings = {
+					html = {
+						format = {
+							wrapAttributes = "preserve-aligned",
+							wrapLineLength = 1000000000000
+						}
+					}
+				},
+				on_attach = function(client, bufnr)
+					global_on_attach("html", client, bufnr)
+				end,
+			})
+			vim.lsp.enable("html")
+
+			vim.lsp.config("cssls", {
+				capabilities = capabilities,
+				cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-css-language-server", "--stdio"},
+				on_attach = function(client, bufnr)
+					global_on_attach("cssls", client, bufnr)
+				end,
+			})
+			vim.lsp.enable("cssls")
+
+			function simple_lsp(lsp)
+				vim.lsp.config(lsp, {
+					on_attach = function(client, bufnr)
+						global_on_attach(lsp, client, bufnr)
+					end,
+				})
+				vim.lsp.enable(lsp)
+			end
+
+			simple_lsp("pyright")
+			simple_lsp("typos_lsp")
+			simple_lsp("zls")
+
 			if isWSL then
-				require('lspconfig').omnisharp.setup {
+				vim.lsp.config("omnisharp", {
 					cmd = { "omnisharp" },
 
 					settings = {
@@ -305,131 +398,18 @@ require("lazy").setup({
 					},
 					capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
 					on_attach = function(client, bufnr)
-						global_on_attach("c#", client, bufnr)
+						global_on_attach("omnisharp", client, bufnr)
 					end,
-				}
+				})
+				vim.lsp.enable("omnisharp")
 			end
 
-			require('lspconfig').pyright.setup({
-				on_attach = function(client, bufnr)
-					global_on_attach("python", client, bufnr)
-				end,
-			})
-
-			require('lspconfig').typos_lsp.setup({
-				on_attach = function(client, bufnr)
-					global_on_attach("typos", client, bufnr)
-				end,
-			})
-
-			-- Javascript/Typescript
-			require('lspconfig').tsserver.setup({
-				cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/typescript-language-server", "--stdio"},
-				on_attach = function(client, bufnr)
-					global_on_attach("typescript", client, bufnr)
-					local conf = {
-						format = {
-							semicolons = 'insert'
-						}
-					}
-					client.notify('workspace/didChangeConfiguration', {
-						settings = {
-							typescript = conf,
-							javascript = conf,
-						}
-					})
-				end,
-			})
-
-			require('lspconfig').eslint.setup({
-				cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-eslint-language-server", "--stdio"},
-				on_attach = function(client, bufnr)
-					global_on_attach("eslint", client, bufnr)
-				end,
-			})
-
-			-- For HTML and CSS.
-			-- Enable (broadcasting) snippet capability for completion
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-			-- HTML
-			require('lspconfig').html.setup({
-				capabilities = capabilities,
-				cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-html-language-server", "--stdio"},
-				settings = {
-					html = {
-						format = {
-							wrapAttributes = "preserve-aligned",
-							wrapLineLength = 1000000000000
-						}
-					}
-				},
-				on_attach = function(client, bufnr)
-					global_on_attach("html", client, bufnr)
-				end,
-			})
-
-			-- CSS
-			require('lspconfig').cssls.setup({
-				capabilities = capabilities,
-				cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-css-language-server", "--stdio"},
-				on_attach = function(client, bufnr)
-					global_on_attach("css", client, bufnr)
-				end,
-			})
-
-			-- Zig
-			require('lspconfig').zls.setup({
-				on_attach = function(client, bufnr)
-					global_on_attach("zig", client, bufnr)
-				end,
-			})
-
-			vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
-				pattern = {'*.zig'},
-				callback = function()
-					vim.lsp.buf.format({async=false})
-					vim.defer_fn(function()
-						-- For some reason zls started to open the Location List, close it.
-						vim.cmd.lclose()
-					end, 0)
-				end,
-			})
-
-
-			-- Go
-			require('lspconfig').gopls.setup({
-				cmd = { 'gopls',  '-remote.listen.timeout=15s'},
-				settings = {
-					gopls = {
-						analyses = {
-							unusedwrite = true,
-							nilness = true,
-							useany = true,
-							unusedparams = true,
-							shadow = true,
-						},
-						hints = {
-							ignoredError = true,
-						},
-						staticcheck = true,
-					},
-				},
-				capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
-				on_attach = function(client, bufnr)
-					global_on_attach("go", client, bufnr)
-				end,
-			})
-
-			--[[
-			require('lspconfig').golangci_lint_ls.setup{
-				init_options = {
-					--command = { "golangci-lint", "run", "--enable-all", "--disable", "exhaustivestruct,exhaustruct,wsl,gofumpt", "--out-format", "json" };
-					--command = { "golangci-lint", "run", "--out-format", "json" };
-				}
-			}
-			]]--
+			--require('lspconfig').golangci_lint_ls.setup{
+			--	init_options = {
+			--		--command = { "golangci-lint", "run", "--enable-all", "--disable", "exhaustivestruct,exhaustruct,wsl,gofumpt", "--out-format", "json" };
+			--		--command = { "golangci-lint", "run", "--out-format", "json" };
+			--	}
+			--}
 
 			-- luasnip setup
 			local luasnip = require('luasnip')

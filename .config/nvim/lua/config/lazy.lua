@@ -202,17 +202,6 @@ require("lazy").setup({
 				vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
 				vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
 
-				if lsp == "gopls" then
-					vim.keymap.set('n', '<space>f', function() require('go.format').goimport() end, bufopts)
-					vim.keymap.set('n', '<space>cl', ':GoCodeLenAct<Enter>', bufopts)
-					vim.keymap.set('n', '<space>gc', function()
-						vim.lsp.buf.execute_command({
-							command = 'gopls.toggle_gc_details',
-							arguments = { { URI = vim.uri_from_bufnr(0) } }
-						})
-					end, bufopts)
-				end
-
 				require('lsp_signature').on_attach(client, bufnr)
 			end
 

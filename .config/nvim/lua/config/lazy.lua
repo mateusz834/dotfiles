@@ -192,11 +192,33 @@ require("lazy").setup({
 					vim.keymap.set('n', 'gr', require('omnisharp_extended').lsp_references, bufopts)
 					vim.keymap.set('n', 'gi', require('omnisharp_extended').lsp_implementation, bufopts)
 				else
-					vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-					vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, bufopts)
-					vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-					vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+					local function on_list(original_win)
+						return function(items, title, context)
+							-- Based on https://www.reddit.com/r/neovim/comments/13nvq2l/how_to_get_references_without_focus_on_quickfix/
+							vim.fn.setqflist({}, " ", items)
+							vim.cmd.copen()
+							vim.api.nvim_set_current_win(original_win)
+						end
+					end
+
+					vim.keymap.set("n", "gd", function()
+						local win = vim.api.nvim_get_current_win()
+						vim.lsp.buf.definition(nil, { on_list = on_list(win) })
+					end)
+					vim.keymap.set("n", "gt", function()
+						local win = vim.api.nvim_get_current_win()
+						vim.lsp.buf.type_definition(nil, { on_list = on_list(win) })
+					end)
+					vim.keymap.set("n", "gr", function()
+						local win = vim.api.nvim_get_current_win()
+						vim.lsp.buf.references(nil, { on_list = on_list(win) })
+					end)
+					vim.keymap.set("n", "gi", function()
+						local win = vim.api.nvim_get_current_win()
+						vim.lsp.buf.implementation(nil, { on_list = on_list(win) })
+					end)
 				end
+
 				vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
 				vim.keymap.set('n', '<C-space>', vim.lsp.buf.signature_help, bufopts)
 				vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)

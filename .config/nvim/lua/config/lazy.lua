@@ -362,6 +362,7 @@ require("lazy").setup({
 			end
 
 			simple_lsp("pyright")
+			simple_lsp("ruff")
 			simple_lsp("typos_lsp")
 			simple_lsp("zls")
 

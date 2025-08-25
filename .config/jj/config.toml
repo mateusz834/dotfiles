@@ -8,6 +8,9 @@ email = "mpoliwczak34@gmail.com"
 #diff-formatter = ["difft", "--color=always", "--sort-paths", "$left", "$right"]
 diff-editor = "gitpatch"
 
+[colors]
+"diff token" = { underline = false }
+
 # https://www.reddit.com/r/programming/comments/1kd5a9n/comment/n1o7hoe/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
 [merge-tools.gitpatch]
 program = "sh"

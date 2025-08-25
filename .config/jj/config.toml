@@ -1,0 +1,61 @@
+"$schema" = "https://jj-vcs.github.io/jj/latest/config-schema.json"
+
+[user]
+name = "Mateusz Poliwczak"
+email = "mpoliwczak34@gmail.com"
+
+[ui]
+#diff-formatter = ["difft", "--color=always", "--sort-paths", "$left", "$right"]
+diff-editor = "gitpatch"
+
+# https://www.reddit.com/r/programming/comments/1kd5a9n/comment/n1o7hoe/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+[merge-tools.gitpatch]
+program = "sh"
+edit-args = ["-c", '''
+  set -eu
+  rm -f "$right/JJ-INSTRUCTIONS"
+  git -C "$left" init -q
+  git -C "$left" add -A
+  git -C "$left" commit -q -m baseline --allow-empty
+  mv "$left/.git" "$right"
+  git -C "$right" add --intent-to-add -A
+  git -C "$right" add -p
+  git -C "$right" diff-index --quiet --cached HEAD && { echo "No changes done, aborting split."; exit 1; }
+  git -C "$right" commit -q -m split
+  git -C "$right" restore . # undo changes in modified files
+  git -C "$right" reset .   # undo --intent-to-add
+  git -C "$right" clean -q -df # remove untracked files
+''',
+]
+
+[config]
+# Set to true to automatically add Gerrit's Change-Id header to commit messages.
+# Set per repo via: jj config set --repo config.gerrit_repo true
+gerrit_repo = false
+
+[templates]
+# https://jj-vcs.github.io/jj/latest/FAQ/#how-do-i-integrate-jujutsu-with-gerrit
+commit_trailers = '''
+if(
+  config("config.gerrit_repo").as_boolean() && !trailers.contains_key("Change-Id"),
+  format_gerrit_change_id_trailer(self)
+)
+'''
+
+# https://github.com/jj-vcs/jj/issues/1946#issuecomment-2572986485
+draft_commit_description = '''
+concat(
+  description,
+  surround(
+    "\nJJ: This commit contains the following changes:\n", "",
+    indent("JJ:     ", diff.summary()),
+  ),
+  surround(
+    "\nJJ: This commit contains the following changes:\n", "",
+    indent("JJ:     ", diff.stat(72)),
+  ),
+  "\n",
+  "JJ: ignore-rest\n",
+  diff.git(),
+)
+'''

@@ -11,8 +11,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local isWSL = os.getenv("WSL_DISTRO_NAME") ~= null
-
 require("lazy").setup({
 	{
 		"folke/tokyonight.nvim",
@@ -172,13 +170,6 @@ require("lazy").setup({
 		end
 	},
 	{
-		"williamboman/mason.nvim",
-		cond = isWSL,
-		config = function()
-			require("mason").setup()
-		end
-	},
-	{
 		'neovim/nvim-lspconfig',
 		dependencies = {
 			'hrsh7th/cmp-nvim-lsp',
@@ -187,7 +178,6 @@ require("lazy").setup({
 			'hrsh7th/nvim-cmp',
 			'L3MON4D3/LuaSnip',
 			'ray-x/lsp_signature.nvim',
-			{'Hoffs/omnisharp-extended-lsp.nvim', cond = isWSL},
 		},
 		config = function()
 			function global_on_attach(lsp, client, bufnr)
@@ -200,38 +190,31 @@ require("lazy").setup({
 					return
 				end
 
-				if lsp == "omnisharp" then
-					vim.keymap.set('n', 'gd', require('omnisharp_extended').lsp_definition, bufopts)
-					vim.keymap.set('n', 'gt', require('omnisharp_extended').lsp_type_definition, bufopts)
-					vim.keymap.set('n', 'gr', require('omnisharp_extended').lsp_references, bufopts)
-					vim.keymap.set('n', 'gi', require('omnisharp_extended').lsp_implementation, bufopts)
-				else
-					local function on_list(original_win)
-						return function(items, title, context)
-							-- Based on https://www.reddit.com/r/neovim/comments/13nvq2l/how_to_get_references_without_focus_on_quickfix/
-							vim.fn.setqflist({}, " ", items)
-							vim.cmd.copen()
-							vim.api.nvim_set_current_win(original_win)
-						end
+				local function on_list(original_win)
+					return function(items, title, context)
+						-- Based on https://www.reddit.com/r/neovim/comments/13nvq2l/how_to_get_references_without_focus_on_quickfix/
+						vim.fn.setqflist({}, " ", items)
+						vim.cmd.copen()
+						vim.api.nvim_set_current_win(original_win)
 					end
-
-					vim.keymap.set("n", "gd", function()
-						local win = vim.api.nvim_get_current_win()
-						vim.lsp.buf.definition(nil, { on_list = on_list(win) })
-					end)
-					vim.keymap.set("n", "gt", function()
-						local win = vim.api.nvim_get_current_win()
-						vim.lsp.buf.type_definition(nil, { on_list = on_list(win) })
-					end)
-					vim.keymap.set("n", "gr", function()
-						local win = vim.api.nvim_get_current_win()
-						vim.lsp.buf.references(nil, { on_list = on_list(win) })
-					end)
-					vim.keymap.set("n", "gi", function()
-						local win = vim.api.nvim_get_current_win()
-						vim.lsp.buf.implementation(nil, { on_list = on_list(win) })
-					end)
 				end
+
+				vim.keymap.set("n", "gd", function()
+					local win = vim.api.nvim_get_current_win()
+					vim.lsp.buf.definition(nil, { on_list = on_list(win) })
+				end)
+				vim.keymap.set("n", "gt", function()
+					local win = vim.api.nvim_get_current_win()
+					vim.lsp.buf.type_definition(nil, { on_list = on_list(win) })
+				end)
+				vim.keymap.set("n", "gr", function()
+					local win = vim.api.nvim_get_current_win()
+					vim.lsp.buf.references(nil, { on_list = on_list(win) })
+				end)
+				vim.keymap.set("n", "gi", function()
+					local win = vim.api.nvim_get_current_win()
+					vim.lsp.buf.implementation(nil, { on_list = on_list(win) })
+				end)
 
 				vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
 				vim.keymap.set('n', '<C-space>', vim.lsp.buf.signature_help, bufopts)
@@ -380,55 +363,6 @@ require("lazy").setup({
 			simple_lsp("typos_lsp")
 			simple_lsp("zls")
 
-			if isWSL then
-				vim.lsp.config("omnisharp", {
-					cmd = { "omnisharp" },
-
-					settings = {
-						FormattingOptions = {
-							-- Enables support for reading code style, naming convention and analyzer
-							-- settings from .editorconfig.
-							EnableEditorConfigSupport = true,
-							-- Specifies whether 'using' directives should be grouped and sorted during
-							-- document formatting.
-							OrganizeImports = nil,
-						},
-						MsBuild = {
-							-- If true, MSBuild project system will only load projects for files that
-							-- were opened in the editor. This setting is useful for big C# codebases
-							-- and allows for faster initialization of code navigation features only
-							-- for projects that are relevant to code that is being edited. With this
-							-- setting enabled OmniSharp may load fewer projects and may thus display
-							-- incomplete reference lists for symbols.
-							LoadProjectsOnDemand = nil,
-						},
-						RoslynExtensionsOptions = {
-							-- Enables support for roslyn analyzers, code fixes and rulesets.
-							EnableAnalyzersSupport = nil,
-							-- Enables support for showing unimported types and unimported extension
-							-- methods in completion lists. When committed, the appropriate using
-							-- directive will be added at the top of the current file. This option can
-							-- have a negative impact on initial completion responsiveness,
-							-- particularly for the first few completion sessions after opening a
-							-- solution.
-							EnableImportCompletion = nil,
-							-- Only run analyzers against open files when 'enableRoslynAnalyzers' is
-							-- true
-							AnalyzeOpenDocumentsOnly = nil,
-						},
-						Sdk = {
-							-- Specifies whether to include preview versions of the .NET SDK when
-							-- determining which version to use for project loading.
-							IncludePrereleases = true,
-						},
-					},
-					capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
-					on_attach = function(client, bufnr)
-						global_on_attach("omnisharp", client, bufnr)
-					end,
-				})
-				vim.lsp.enable("omnisharp")
-			end
 
 			--require('lspconfig').golangci_lint_ls.setup{
 			--	init_options = {

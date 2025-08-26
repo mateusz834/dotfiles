@@ -60,6 +60,20 @@ require("lazy").setup({
 
 	},
 	{
+		"julienvincent/hunk.nvim",
+		dependencies = { "MunifTanjim/nui.nvim" },
+		cmd = { "DiffEditor" },
+		config = function()
+			require("hunk").setup({
+				ui = {
+					tree = {
+						mode = "flat",
+					},
+				},
+			})
+		end,
+	},
+	{
 		'stevearc/oil.nvim',
 		dependencies = { { "echasnovski/mini.icons", opts = {} } },
 		config = function()

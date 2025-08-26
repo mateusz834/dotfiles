@@ -37,7 +37,7 @@ vim.api.nvim_create_autocmd('FileType', {
 vim.keymap.set('n', '<F1>', '<nop>')
 vim.keymap.set('i', '<F1>', '<nop>')
 
--- higlight trailing spaces
+-- highlight trailing spaces
 vim.cmd('highlight ExtraWhitespace ctermbg=green guibg=green')
 vim.cmd('match ExtraWhitespace /\\s\\+$/')
 

@@ -62,11 +62,11 @@ function set_read_only(dir)
 	})
 end
 
-set_read_only('/home/mateusz/.rustup/*')
-set_read_only('/home/mateusz/.cargo/*')
+set_read_only(os.getenv("HOME") .. '/.rustup/*')
+set_read_only(os.getenv("HOME") .. '/.cargo/*')
 
 -- necessary when going to definition of a cgo stuff.
-set_read_only('/home/mateusz/.cache/go-build/*')
+set_read_only(os.getenv("HOME") .. '/.cache/go-build/*')
 
 -- Make the hover preview (under 'K' keymap) with a max width and a rounded border.
 -- Source: https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization

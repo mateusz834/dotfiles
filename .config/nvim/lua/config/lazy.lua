@@ -294,7 +294,7 @@ require("lazy").setup({
 			vim.lsp.enable("gopls")
 
 			vim.lsp.config("ts_ls", {
-				cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/typescript-language-server", "--stdio"},
+				cmd = {os.getenv("HOME") .. "/.config/nvim/lua/config/node_modules/.bin/typescript-language-server", "--stdio"},
 				on_attach = function(client, bufnr)
 					global_on_attach("tsserver", client, bufnr)
 					local conf = {
@@ -313,7 +313,7 @@ require("lazy").setup({
 			vim.lsp.enable("ts_ls")
 
 			vim.lsp.config("eslint", {
-				cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-eslint-language-server", "--stdio"},
+				cmd = {os.getenv("HOME") .. "/.config/nvim/lua/config/node_modules/.bin/vscode-eslint-language-server", "--stdio"},
 				on_attach = function(client, bufnr)
 					global_on_attach("eslint", client, bufnr)
 				end,
@@ -325,7 +325,7 @@ require("lazy").setup({
 
 			vim.lsp.config("html", {
 				capabilities = capabilities,
-				cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-html-language-server", "--stdio"},
+				cmd = {os.getenv("HOME") .. "/.config/nvim/lua/config/node_modules/.bin/vscode-html-language-server", "--stdio"},
 				settings = {
 					html = {
 						format = {
@@ -342,7 +342,7 @@ require("lazy").setup({
 
 			vim.lsp.config("cssls", {
 				capabilities = capabilities,
-				cmd = {"/home/mateusz/.config/nvim/lua/config/node_modules/.bin/vscode-css-language-server", "--stdio"},
+				cmd = {os.getenv("HOME") .. "/.config/nvim/lua/config/node_modules/.bin/vscode-css-language-server", "--stdio"},
 				on_attach = function(client, bufnr)
 					global_on_attach("cssls", client, bufnr)
 				end,

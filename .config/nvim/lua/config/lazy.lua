@@ -72,6 +72,19 @@ require("lazy").setup({
 		end,
 	},
 	{
+		'stevearc/conform.nvim',
+		config = function()
+			require("conform").setup({
+				formatters_by_ft = {
+					javascript = { "prettier", stop_after_first = true },
+					javascriptreact = { "prettier", stop_after_first = true },
+					typescript = { "prettier", stop_after_first = true },
+					typescriptreact = { "prettier", stop_after_first = true },
+				},
+			})
+		end
+	},
+	{
 		'stevearc/oil.nvim',
 		dependencies = { { "echasnovski/mini.icons", opts = {} } },
 		config = function()
@@ -229,43 +242,68 @@ require("lazy").setup({
 			vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
 				buffer = bufnr,
 				callback = function(args)
-					local formattingAvail = false
+					local lspFormattingAvail = false
 					for _, client in pairs(vim.lsp.get_clients({ bufnr = bufnr })) do
 						if client.supports_method("textDocument/formatting") then
-							formattingAvail = true
+							lspFormattingAvail = true
 						end
 					end
-					if not formattingAvail then
+
+					conformFormattingAvail = #(require("conform").list_formatters(bufnr)) ~= 0
+					if not lspFormattingAvail and not conformFormattingAvail then
 						return
 					end
 
-					if vim.bo[args.buf].filetype == "go" then
-						-- Based on: https://github.com/golang/tools/blob/master/gopls/doc/vim.md#imports-and-formatting
-						local params = vim.lsp.util.make_range_params()
-						params.context = {only = {"source.organizeImports"}}
-						-- buf_request_sync defaults to a 1000ms timeout. Depending on your
-						-- machine and codebase, you may want longer. Add an additional
-						-- argument after params if you find that you have to write the file
-						-- twice for changes to be saved.
-						-- E.g., vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
-						local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params)
-						for cid, res in pairs(result or {}) do
-							for _, r in pairs(res.result or {}) do
-								if r.edit then
-									local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
-									vim.lsp.util.apply_workspace_edit(r.edit, enc)
-								end
+					local filetype = vim.bo[args.buf].filetype
+
+					-- explicit preference to conform (if avail):
+					local preferConform = {
+						"javascript",
+						"javascriptreact",
+						"typescript",
+						"typescriptreact"
+					}
+
+					if conformFormattingAvail then
+						for _, v in ipairs(preferConform) do
+							if v == filetype then
+								require("conform").format({ async = false, bufnr = bufnr })
+								return
 							end
 						end
 					end
 
-					vim.lsp.buf.format({async=false})
+					if lspFormattingAvail then
+						if filetype == "go" then
+							-- Based on: https://github.com/golang/tools/blob/master/gopls/doc/vim.md#imports-and-formatting
+							local params = vim.lsp.util.make_range_params()
+							params.context = {only = {"source.organizeImports"}}
+							-- buf_request_sync defaults to a 1000ms timeout. Depending on your
+							-- machine and codebase, you may want longer. Add an additional
+							-- argument after params if you find that you have to write the file
+							-- twice for changes to be saved.
+							-- E.g., vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
+							local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params)
+							for cid, res in pairs(result or {}) do
+								for _, r in pairs(res.result or {}) do
+									if r.edit then
+										local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
+										vim.lsp.util.apply_workspace_edit(r.edit, enc)
+									end
+								end
+							end
+						end
 
-					if vim.bo[args.buf].filetype == "zig" then
-						vim.defer_fn(function()
-							-- For some reason zls started to open the Location List, close it.
-							vim.cmd.lclose()
-						end, 0)
+						vim.lsp.buf.format({async=false})
+
+						if vim.bo[args.buf].filetype == "zig" then
+							vim.defer_fn(function()
+								-- For some reason zls started to open the Location List, close it.
+								vim.cmd.lclose()
+							end, 0)
+						end
+					elseif conformFormattingAvail then
+						require("conform").format({ async = false, bufnr = bufnr })
 					end
 				end,
 			})

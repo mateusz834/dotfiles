@@ -297,7 +297,7 @@ require("lazy").setup({
 			vim.lsp.config("ts_ls", {
 				cmd = {os.getenv("HOME") .. "/.config/nvim/lua/config/node_modules/.bin/typescript-language-server", "--stdio"},
 				on_attach = function(client, bufnr)
-					global_on_attach("tsserver", client, bufnr)
+					global_on_attach("ts_ls", client, bufnr)
 					local conf = {
 						format = {
 							semicolons = 'insert'

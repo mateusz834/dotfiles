@@ -190,7 +190,6 @@ require("lazy").setup({
 			'hrsh7th/cmp-path',
 			'hrsh7th/cmp-cmdline',
 			'hrsh7th/nvim-cmp',
-			'L3MON4D3/LuaSnip',
 			'ray-x/lsp_signature.nvim',
 		},
 		config = function()

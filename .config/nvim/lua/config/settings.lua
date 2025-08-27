@@ -18,17 +18,16 @@ vim.api.nvim_create_autocmd('FileType', {
 	callback = function(args)
 		vim.opt.smartindent = true
 
+
+		vim.opt.tabstop = 4
+		vim.opt.shiftwidth = 4
+		vim.opt.softtabstop = 4
+
 		local ft = vim.bo[args.buf].filetype
-		if ft == "javascript" or ft == "typescript" then
-			vim.opt.tabstop = 2
-			vim.opt.shiftwidth = 2
-			vim.opt.softtabstop = 2
-			vim.opt.expandtab = true --replace tab with spaces
-		else
-			vim.opt.tabstop = 4
-			vim.opt.shiftwidth = 4
-			vim.opt.softtabstop = 4
+		if ft == "go" then
 			vim.opt.expandtab = false --replace tab with spaces
+		else
+			vim.opt.expandtab = true --replace tab with spaces
 		end
 	end
 })

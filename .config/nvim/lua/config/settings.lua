@@ -23,11 +23,19 @@ vim.api.nvim_create_autocmd('FileType', {
 		vim.opt.shiftwidth = 4
 		vim.opt.softtabstop = 4
 
+		local use_spaces = {
+			javascript = true,
+			typescript = true,
+			javascriptreact = true,
+			typescriptreact = true,
+			python = true,
+			yaml = true,
+		}
+
 		local ft = vim.bo[args.buf].filetype
-		if ft == "go" then
-			vim.opt.expandtab = false --replace tab with spaces
-		else
-			vim.opt.expandtab = true --replace tab with spaces
+		vim.opt.expandtab = false
+		if use_spaces[ft] then
+			vim.opt_local.expandtab = true
 		end
 	end
 })

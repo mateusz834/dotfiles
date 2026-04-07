@@ -294,12 +294,12 @@ require("lazy").setup({
 
 						vim.lsp.buf.format({async=false})
 
-						if vim.bo[args.buf].filetype == "zig" then
-							vim.defer_fn(function()
-								-- For some reason zls started to open the Location List, close it.
-								vim.cmd.lclose()
-							end, 0)
-						end
+						--if vim.bo[args.buf].filetype == "zig" then
+						--	vim.defer_fn(function()
+						--		-- For some reason zls started to open the Location List, close it.
+						--		vim.cmd.lclose()
+						--	end, 0)
+						--end
 					elseif conformFormattingAvail then
 						require("conform").format({ async = false, bufnr = bufnr })
 					end

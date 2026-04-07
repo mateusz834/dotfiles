@@ -103,13 +103,3 @@ vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
 
 vim.diagnostic.config({ virtual_text = true })
 
--- Workaround for https://github.com/neovim/neovim/issues/35110
-vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI", "BufEnter" }, {
-	callback = function(args)
-		local bufnr = args.buf
-		if vim.lsp.inlay_hint.is_enabled({bufnr = bufnr}) then
-			vim.lsp.inlay_hint.enable(false, {bufnr = bufnr})
-			vim.lsp.inlay_hint.enable(true, {bufnr = bufnr})
-		end
-	end,
-})

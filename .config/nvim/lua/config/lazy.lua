@@ -160,26 +160,7 @@ require("lazy").setup({
 					pattern = [[\b(KEYWORDS)\b]],
 				},
 			})
-		end
-	},
-	{
-		"folke/flash.nvim",
-		keys = {
-			{ "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-		},
-		config = function()
-			require("flash").setup({
-				mode = "fuzzy",
-				modes = {
-					char = {
-						enabled = false,
-					},
-				},
-			})
-			-- Based on https://github.com/LazyVim/LazyVim/discussions/1313
-			vim.api.nvim_command("hi clear FlashLabel")
-			vim.api.nvim_command("hi FlashLabel guibg=#000000 guifg=#FFFFFF")
-		end
+		end,
 	},
 	{
 		"ThePrimeagen/harpoon",

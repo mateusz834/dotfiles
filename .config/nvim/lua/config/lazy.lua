@@ -165,6 +165,10 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>ut", vim.cmd.UndotreeToggle)
 		end,
 	},
+	--  Debugging utilities:
+	-- :checkhealth vim.lsp
+	-- :lsp {stop enable dsable restart}
+	-- cat .local/state/nvim/lsp.log
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {

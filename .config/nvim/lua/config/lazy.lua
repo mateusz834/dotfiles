@@ -102,32 +102,49 @@ require("lazy").setup({
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		config = function()
-			require('nvim-treesitter.configs').setup({
-				ensure_installed = {
-					'go',
-					'lua',
-					'rust',
-					'zig',
-					'html',
-					'css',
-					'javascript',
-					'typescript',
-					'jsdoc',
-					'svelte',
-					'tsx',
-					'python',
-					'sql',
-				},
+			ensureInstalled = {
+				"go",
+				"lua",
+				"rust",
+				"zig",
+				"html",
+				"css",
+				"javascript",
+				"typescript",
+				"jsdoc",
+				"svelte",
+				"tsx",
+				"python",
+				"sql",
+			}
+			require("nvim-treesitter").setup({
 				highlight = {
 					enable = true,
-					disable = function(lang, bufnr)
-						--if lang == "go" and vim.api.nvim_buf_line_count(bufnr) > 3000 then
-						--	return true
-						--end
-					end
+					--disable = function(lang, bufnr)
+					--	if lang == "go" and vim.api.nvim_buf_line_count(bufnr) > 3000 then
+					--	      return true
+					--	end
+					--end
 				},
 			})
-		end
+
+			-- https://www.qu-8n.com/posts/treesitter-migration-guide-for-nvim-0-12
+			vim.api.nvim_create_autocmd("FileType", {
+				callback = function()
+					-- Enable treesitter highlighting and disable regex syntax
+					pcall(vim.treesitter.start)
+					-- Enable treesitter-based indentation
+					vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+				end,
+			})
+			local alreadyInstalled = require("nvim-treesitter.config").get_installed()
+			local parsersToInstall = vim.iter(ensureInstalled)
+				:filter(function(parser)
+					return not vim.tbl_contains(alreadyInstalled, parser)
+				end)
+				:totable()
+			require("nvim-treesitter").install(parsersToInstall)
+		end,
 	},
 	{
 		"folke/todo-comments.nvim",
@@ -243,7 +260,8 @@ require("lazy").setup({
 				callback = function(args)
 					local lspFormattingAvail = false
 					for _, client in pairs(vim.lsp.get_clients({ bufnr = bufnr })) do
-						if client.supports_method("textDocument/formatting") then
+						local caps = client.server_capabilities
+						if caps.documentFormattingProvider then
 							lspFormattingAvail = true
 						end
 					end

@@ -16,12 +16,27 @@
 alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
 
+# Ignore the dotfiles repo at $HOME in for every
+# other repo display the git status.
+IGNORED_REPO="$HOME"
+function set_custom_ps1() {
+    local git_root
+    # Find the root of the current git repo (if any)
+    git_root=$(git rev-parse --show-toplevel 2>/dev/null)
+
+    if [[ "$git_root" == "$IGNORED_REPO" ]]; then
+        PS1='[\u@\h \W]\$ '
+    else
+		PS1='[\u@\h \W $(__git_ps1 "(%s)")]\$ '
+    fi
+}
+
 if  [ -f /usr/share/git/completion/git-prompt.sh ]; then
 	source /usr/share/git/completion/git-prompt.sh
-	export PS1='[\u@\h \W $(__git_ps1 "(%s)")]\$ '
+	PROMPT_COMMAND=set_custom_ps1
 elif [ -f /etc/bash_completion.d/git-prompt ]; then
 	source /etc/bash_completion.d/git-prompt
-	export PS1='[\u@\h \W $(__git_ps1 "(%s)")]\$ '
+	PROMPT_COMMAND=set_custom_ps1
 fi
 
 bind -m vi-command '"\C-o": "\C-z\ec\C-z"'

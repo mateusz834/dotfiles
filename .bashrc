@@ -5,6 +5,14 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# To setup this dotfiles run (in $HOME):
+#
+# jj git init --colocate .
+# jj git remote add origin git@github.com:mateusz834/dotfiles.git
+# jj git fetch
+# jj bookmark track master
+# jj new master
+
 alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
 
@@ -35,7 +43,5 @@ alias ip='ip -c'
 
 alias json-pretty='python3 -m json.tool'
 alias http-server='python3 -m http.server --bind 127.0.0.1'
-
-alias gitdotfiles='git --git-dir=$HOME/.local/share/git-dotfiles --work-tree=$HOME'
 
 alias act="act --container-daemon-socket $XDG_RUNTIME_DIR/podman/podman.sock"

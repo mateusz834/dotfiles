@@ -1,0 +1,36 @@
+# Ignore everything in $HOME
+*
+
+# Manually add files to track from $HOME.
+!/.config/
+
+!/.config/alacritty/
+!/.config/alacritty/**
+
+!/.config/git/
+!/.config/git/**
+
+!/.config/nvim/
+!/.config/nvim/**
+
+!/.config/pipewire/
+!/.config/pipewire/**
+
+!/.config/systemd/
+!/.config/systemd/user/
+!/.config/systemd/user/*.{path|timer|service}
+
+!/.config/tmux/
+!/.config/tmux/**
+
+!/.config/jj/
+!/.config/jj/config.toml
+
+!/.ssh/
+!/.ssh/config
+
+!/.config/okularpartrc
+!/.gitignore
+!/.bash_profile
+!/.bashrc
+!/.inputrc

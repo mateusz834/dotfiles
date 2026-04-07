@@ -57,20 +57,6 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"julienvincent/hunk.nvim",
-		dependencies = { "MunifTanjim/nui.nvim" },
-		cmd = { "DiffEditor" },
-		config = function()
-			require("hunk").setup({
-				ui = {
-					tree = {
-						mode = "flat",
-					},
-				},
-			})
-		end,
-	},
-	{
 		"stevearc/conform.nvim",
 		config = function()
 			require("conform").setup({

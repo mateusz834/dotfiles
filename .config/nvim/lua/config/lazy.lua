@@ -1,13 +1,13 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable", -- latest stable release
+		lazypath,
+	})
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -20,13 +20,13 @@ require("lazy").setup({
 		config = function()
 			require("tokyonight").setup({
 				on_colors = function(colors)
-					colors.comment = '#9c9c9c'
+					colors.comment = "#9c9c9c"
 				end,
 			})
-			vim.cmd('colorscheme tokyonight-night')
+			vim.cmd("colorscheme tokyonight-night")
 			-- lighter line numbers
-			vim.cmd('hi LineNr guifg=#9c9c9c')
-		end
+			vim.cmd("hi LineNr guifg=#9c9c9c")
+		end,
 	},
 	{
 		"nvim-telescope/telescope.nvim",
@@ -34,8 +34,8 @@ require("lazy").setup({
 		config = function()
 			require("telescope").setup({
 				defaults = {
-					file_ignore_patterns = {"node_modules"}
-				}
+					file_ignore_patterns = { "node_modules" },
+				},
 			})
 			local builtin = require("telescope.builtin")
 			local utils = require("telescope.utils")
@@ -54,8 +54,7 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
 			vim.keymap.set("n", "<leader>df", function() builtin.find_files({ cwd = removeOilPrefix(utils.buffer_dir()) }) end)
 			vim.keymap.set("n", "<leader>dg", function() builtin.live_grep({ cwd = removeOilPrefix(utils.buffer_dir()) }) end)
-		end
-
+		end,
 	},
 	{
 		"julienvincent/hunk.nvim",
@@ -72,7 +71,7 @@ require("lazy").setup({
 		end,
 	},
 	{
-		'stevearc/conform.nvim',
+		"stevearc/conform.nvim",
 		config = function()
 			require("conform").setup({
 				formatters_by_ft = {
@@ -82,21 +81,21 @@ require("lazy").setup({
 					typescriptreact = { "prettier", stop_after_first = true },
 				},
 			})
-		end
+		end,
 	},
 	{
-		'stevearc/oil.nvim',
+		"stevearc/oil.nvim",
 		dependencies = { { "nvim-mini/mini.icons", opts = {} } },
 		config = function()
 			require("oil").setup({
 				view_options = {
 					show_hidden = true,
 				},
-				watch_for_changes = true
+				watch_for_changes = true,
 			})
 			vim.keymap.set("n", "<leader>o", function() require("oil").open() end)
 			vim.keymap.set("n", "<leader>O", function() require("oil").open(vim.fn.getcwd()) end)
-		end
+		end,
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
@@ -166,37 +165,37 @@ require("lazy").setup({
 		"ThePrimeagen/harpoon",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = function()
-			vim.keymap.set('n', "<leader>ha", function() require("harpoon.mark").add_file() end, silent)
-			vim.keymap.set('n', "<leader>hh", function() require("harpoon.ui").toggle_quick_menu() end, silent)
-			vim.keymap.set('n', "ą", function() require("harpoon.ui").nav_file(1) end, silent) -- Right Alt + a
-			vim.keymap.set('n', "ś", function() require("harpoon.ui").nav_file(2) end, silent) -- Right Alt + s
-			vim.keymap.set('n', "ð", function() require("harpoon.ui").nav_file(3) end, silent) -- Right Alt + d
-			vim.keymap.set('n', "æ", function() require("harpoon.ui").nav_file(4) end, silent) -- Right Alt + f
-		end
+			vim.keymap.set("n", "<leader>ha", function() require("harpoon.mark").add_file() end, silent)
+			vim.keymap.set("n", "<leader>hh", function() require("harpoon.ui").toggle_quick_menu() end, silent)
+			vim.keymap.set("n", "ą", function() require("harpoon.ui").nav_file(1) end, silent) -- Right Alt + a
+			vim.keymap.set("n", "ś", function() require("harpoon.ui").nav_file(2) end, silent) -- Right Alt + s
+			vim.keymap.set("n", "ð", function() require("harpoon.ui").nav_file(3) end, silent) -- Right Alt + d
+			vim.keymap.set("n", "æ", function() require("harpoon.ui").nav_file(4) end, silent) -- Right Alt + f
+		end,
 	},
 	{
 		"mbbill/undotree",
 		config = function()
 			vim.keymap.set("n", "<leader>ut", vim.cmd.UndotreeToggle)
-		end
+		end,
 	},
 	{
-		'neovim/nvim-lspconfig',
+		"neovim/nvim-lspconfig",
 		dependencies = {
-			'hrsh7th/cmp-nvim-lsp',
-			'hrsh7th/cmp-buffer',
-			'hrsh7th/cmp-path',
-			'hrsh7th/cmp-cmdline',
-			'hrsh7th/nvim-cmp',
-			'ray-x/lsp_signature.nvim',
+			"hrsh7th/cmp-nvim-lsp",
+			"hrsh7th/cmp-buffer",
+			"hrsh7th/cmp-path",
+			"hrsh7th/cmp-cmdline",
+			"hrsh7th/nvim-cmp",
+			"ray-x/lsp_signature.nvim",
 		},
 		config = function()
 			function global_on_attach(lsp, client, bufnr)
-				local bufopts = { noremap=true, silent=true, buffer=bufnr }
+				local bufopts = { noremap = true, silent = true, buffer = bufnr }
 
 				vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 
-				vim.keymap.set({'v', 'n'}, '<space>a', vim.lsp.buf.code_action, bufopts)
+				vim.keymap.set({ "v", "n" }, "<space>a", vim.lsp.buf.code_action, bufopts)
 				if lsp == "typos_lsp" then
 					return
 				end
@@ -227,16 +226,16 @@ require("lazy").setup({
 					vim.lsp.buf.implementation(nil, { on_list = on_list(win) })
 				end, bufopts)
 
-				vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-				vim.keymap.set('n', '<C-space>', vim.lsp.buf.signature_help, bufopts)
-				vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-				vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
+				vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
+				vim.keymap.set("n", "<C-space>", vim.lsp.buf.signature_help, bufopts)
+				vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, bufopts)
+				vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, bufopts)
 
-				require('lsp_signature').on_attach(client, bufnr)
+				require("lsp_signature").on_attach(client, bufnr)
 			end
 
 			-- format on save
-			vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+			vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 				buffer = bufnr,
 				callback = function(args)
 					local lspFormattingAvail = false
@@ -259,7 +258,7 @@ require("lazy").setup({
 						"javascript",
 						"javascriptreact",
 						"typescript",
-						"typescriptreact"
+						"typescriptreact",
 					}
 
 					if conformFormattingAvail then
@@ -275,7 +274,7 @@ require("lazy").setup({
 						if filetype == "go" then
 							-- Based on: https://github.com/golang/tools/blob/master/gopls/doc/vim.md#imports-and-formatting
 							local params = vim.lsp.util.make_range_params()
-							params.context = {only = {"source.organizeImports"}}
+							params.context = { only = { "source.organizeImports" } }
 							-- buf_request_sync defaults to a 1000ms timeout. Depending on your
 							-- machine and codebase, you may want longer. Add an additional
 							-- argument after params if you find that you have to write the file
@@ -292,7 +291,7 @@ require("lazy").setup({
 							end
 						end
 
-						vim.lsp.buf.format({async=false})
+						vim.lsp.buf.format({ async = false })
 
 						--if vim.bo[args.buf].filetype == "zig" then
 						--	vim.defer_fn(function()
@@ -307,7 +306,7 @@ require("lazy").setup({
 			})
 
 			vim.lsp.config("gopls", {
-				cmd = { 'gopls',  '-remote.listen.timeout=15s'},
+				cmd = { "gopls", "-remote.listen.timeout=15s" },
 				settings = {
 					gopls = {
 						analyses = {
@@ -331,26 +330,26 @@ require("lazy").setup({
 			vim.lsp.enable("gopls")
 
 			vim.lsp.config("ts_ls", {
-				cmd = {os.getenv("HOME") .. "/.config/nvim/lua/config/node_modules/.bin/typescript-language-server", "--stdio"},
+				cmd = { os.getenv("HOME") .. "/.config/nvim/lua/config/node_modules/.bin/typescript-language-server", "--stdio" },
 				on_attach = function(client, bufnr)
 					global_on_attach("ts_ls", client, bufnr)
 					local conf = {
 						format = {
-							semicolons = 'insert'
-						}
+							semicolons = "insert",
+						},
 					}
-					client.notify('workspace/didChangeConfiguration', {
+					client.notify("workspace/didChangeConfiguration", {
 						settings = {
 							typescript = conf,
 							javascript = conf,
-						}
+						},
 					})
 				end,
 			})
 			vim.lsp.enable("ts_ls")
 
 			vim.lsp.config("eslint", {
-				cmd = {os.getenv("HOME") .. "/.config/nvim/lua/config/node_modules/.bin/vscode-eslint-language-server", "--stdio"},
+				cmd = { os.getenv("HOME") .. "/.config/nvim/lua/config/node_modules/.bin/vscode-eslint-language-server", "--stdio" },
 				on_attach = function(client, bufnr)
 					global_on_attach("eslint", client, bufnr)
 				end,
@@ -362,14 +361,14 @@ require("lazy").setup({
 
 			vim.lsp.config("html", {
 				capabilities = capabilities,
-				cmd = {os.getenv("HOME") .. "/.config/nvim/lua/config/node_modules/.bin/vscode-html-language-server", "--stdio"},
+				cmd = { os.getenv("HOME") .. "/.config/nvim/lua/config/node_modules/.bin/vscode-html-language-server", "--stdio" },
 				settings = {
 					html = {
 						format = {
 							wrapAttributes = "preserve-aligned",
-							wrapLineLength = 1000000000000
-						}
-					}
+							wrapLineLength = 1000000000000,
+						},
+					},
 				},
 				on_attach = function(client, bufnr)
 					global_on_attach("html", client, bufnr)
@@ -379,7 +378,7 @@ require("lazy").setup({
 
 			vim.lsp.config("cssls", {
 				capabilities = capabilities,
-				cmd = {os.getenv("HOME") .. "/.config/nvim/lua/config/node_modules/.bin/vscode-css-language-server", "--stdio"},
+				cmd = { os.getenv("HOME") .. "/.config/nvim/lua/config/node_modules/.bin/vscode-css-language-server", "--stdio" },
 				on_attach = function(client, bufnr)
 					global_on_attach("cssls", client, bufnr)
 				end,
@@ -408,7 +407,7 @@ require("lazy").setup({
 			--	}
 			--}
 
-			local cmp = require('cmp')
+			local cmp = require("cmp")
 			cmp.setup({
 				snippet = {
 					expand = function(args)
@@ -416,27 +415,27 @@ require("lazy").setup({
 					end,
 				},
 				mapping = cmp.mapping.preset.insert({
-					['<C-b>'] = cmp.mapping.scroll_docs(-4),
-					['<C-f>'] = cmp.mapping.scroll_docs(4),
-					['<C-Space>'] = cmp.mapping.complete(),
-					['<C-e>'] = cmp.mapping.abort(),
-					['<CR>'] = cmp.mapping.confirm({ select = true }),
+					["<C-b>"] = cmp.mapping.scroll_docs(-4),
+					["<C-f>"] = cmp.mapping.scroll_docs(4),
+					["<C-Space>"] = cmp.mapping.complete(),
+					["<C-e>"] = cmp.mapping.abort(),
+					["<CR>"] = cmp.mapping.confirm({ select = true }),
 				}),
 				sources = cmp.config.sources({
-					{ name = 'nvim_lsp' },
-					{ name = 'path' },
-					{ name = 'buffer' },
+					{ name = "nvim_lsp" },
+					{ name = "path" },
+					{ name = "buffer" },
 				}),
 			})
-			cmp.setup.cmdline({ '/', '?' }, {
+			cmp.setup.cmdline({ "/", "?" }, {
 				mapping = cmp.mapping.preset.cmdline(),
-				sources = {{ name = 'buffer' }}
+				sources = { { name = "buffer" } },
 			})
-			cmp.setup.cmdline(':', {
+			cmp.setup.cmdline(":", {
 				mapping = cmp.mapping.preset.cmdline(),
-				sources = cmp.config.sources({{ name = 'path' }}, {{ name = 'cmdline' }}),
-				matching = { disallow_symbol_nonprefix_matching = false }
+				sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } }),
+				matching = { disallow_symbol_nonprefix_matching = false },
 			})
-		end
-	}
+		end,
+	},
 })

@@ -399,7 +399,7 @@ require("lazy").setup({
 			simple_lsp("ruff")
 			simple_lsp("typos_lsp")
 			simple_lsp("zls")
-
+			simple_lsp("clangd")
 
 			--require('lspconfig').golangci_lint_ls.setup{
 			--	init_options = {

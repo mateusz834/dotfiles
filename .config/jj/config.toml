@@ -4,9 +4,6 @@
 name = "Mateusz Poliwczak"
 email = "mpoliwczak34@gmail.com"
 
-[ui]
-conflict-marker-style = "git"
-
 [colors]
 "diff token" = { underline = false }
 

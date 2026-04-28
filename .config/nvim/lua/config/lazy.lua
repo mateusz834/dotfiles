@@ -388,7 +388,7 @@ require("lazy").setup({
 				vim.lsp.enable(lsp)
 			end
 
-			simple_lsp("pyright")
+			simple_lsp("basedpyright")
 			simple_lsp("ruff")
 			simple_lsp("typos_lsp")
 			simple_lsp("zls")

@@ -69,7 +69,7 @@ alias act="act --container-daemon-socket $XDG_RUNTIME_DIR/podman/podman.sock"
 # To run without this wrapper use `command jj <args>`
 jj() {
 	if [[ "$OSTYPE" == linux* ]]; then
-		# On linux create mount namespace, that hides ~/.jj and ~/.git contentes.
+		# On linux create mount namespace, that hides ~/.jj and ~/.git contents.
 		unshare --user --map-root-user --mount -- bash -c '
 			mount -t tmpfs tmpfs "$HOME/.jj"
 			mount -t tmpfs tmpfs "$HOME/.git"
@@ -79,8 +79,13 @@ jj() {
 		# On other systems, without namespaces, just change the permissions.
 		local jj_mode git_mode status
 
-		jj_mode=$(stat -c '%a' "$HOME/.jj") || return
-		git_mode=$(stat -c '%a' "$HOME/.git") || return
+		if [[ "$OSTYPE" == darwin* ]]; then
+		    jj_mode=$(stat -f '%Lp' "$HOME/.jj") || return
+		    git_mode=$(stat -f '%Lp' "$HOME/.git") || return
+		else
+		    jj_mode=$(stat -c '%a' "$HOME/.jj") || return
+		    git_mode=$(stat -c '%a' "$HOME/.git") || return
+		fi
 
 		chmod 000 "$HOME/.jj" "$HOME/.git" || return
 
@@ -108,7 +113,10 @@ function _compalias() {
     COMP_POINT="${#COMP_LINE}"
 
     # regex not perfect but good enough for 99%
-    fn="$(complete -p "${COMP_WORDS[0]}" | grep -Po -- '-F\s+\K\w+')"
+    # fn="$(complete -p "${COMP_WORDS[0]}" | grep -Po -- '-F\s+\K\w+')"
+	#
+	# Replaced grep (above) with sed, for MacOS support.
+	fn="$(complete -p "${COMP_WORDS[0]}" | sed -n 's/.*-F \([^ ]*\).*/\1/p')"
 
     # [-1] is generally faster than [$COMP_CWORD]
     "$fn" "${COMP_WORDS[0]}" "${COMP_WORDS[-1]}" "${COMP_WORDS[-2]}"

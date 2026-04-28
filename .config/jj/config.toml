@@ -4,9 +4,6 @@
 name = "Mateusz Poliwczak"
 email = "mpoliwczak34@gmail.com"
 
-[colors]
-"diff token" = { underline = false }
-
 [config]
 # Set to true to automatically add Gerrit's Change-Id header to commit messages.
 # Set per repo via: jj config set --repo config.gerrit_repo true

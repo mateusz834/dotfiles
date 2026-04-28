@@ -8,7 +8,7 @@
 !/.config/alacritty/**
 
 !/.config/git/
-!/.config/git/**
+!/.config/git/config
 
 !/.config/nvim/
 !/.config/nvim/**

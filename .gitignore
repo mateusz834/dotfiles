@@ -34,3 +34,6 @@
 !/.bash_profile
 !/.bashrc
 !/.inputrc
+
+!/.config/htop
+!/.config/htop/htoprc

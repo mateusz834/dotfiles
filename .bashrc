@@ -65,17 +65,33 @@ alias act="act --container-daemon-socket $XDG_RUNTIME_DIR/podman/podman.sock"
 
 # Alias for jj that disallows use of jj for the $HOME dotfiles repo,
 # to manipulate dotfiles repo use jjdotfiles.
+#
+# To run without this wrapper use `command jj <args>`
 jj() {
-    local root
+	if [[ "$OSTYPE" == linux* ]]; then
+		# On linux create mount namespace, that hides ~/.jj and ~/.git contentes.
+		unshare --user --map-root-user --mount -- bash -c '
+			mount -t tmpfs tmpfs "$HOME/.jj"
+			mount -t tmpfs tmpfs "$HOME/.git"
+			exec jj "$@"
+		' bash "$@"
+	else
+		# On other systems, without namespaces, just change the permissions.
+		local jj_mode git_mode status
 
-    root=$(command jj root 2>/dev/null)
+		jj_mode=$(stat -c '%a' "$HOME/.jj") || return
+		git_mode=$(stat -c '%a' "$HOME/.git") || return
 
-    if [[ "$root" == "$HOME" ]]; then
-        echo "error: this is the dotfiles repo; use jjdotfiles" >&2
-        return 1
-    fi
+		chmod 000 "$HOME/.jj" "$HOME/.git" || return
 
-    command jj "$@"
+		command jj "$@"
+		status=$?
+
+		chmod "$jj_mode" "$HOME/.jj"
+		chmod "$git_mode" "$HOME/.git"
+
+		return "$status"
+	fi
 }
 
 # https://www.reddit.com/r/bash/comments/oinauf/comment/lb9xhi5

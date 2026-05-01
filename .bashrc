@@ -7,11 +7,13 @@
 
 # To setup this dotfiles run (in $HOME):
 #
-# jj git init --colocate .
-# jj git remote add origin git@github.com:mateusz834/dotfiles.git
-# jj git fetch
-# jj bookmark track master
-# jj new master
+#	jj git init --colocate .
+#	jj git remote add origin git@github.com:mateusz834/dotfiles.git
+#	jj git fetch
+#	jj bookmark track master
+#	jj new master
+#
+# On now on use jjdotfiles to manage the dotfiles repo.
 
 alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
@@ -60,3 +62,47 @@ alias json-pretty='python3 -m json.tool'
 alias http-server='python3 -m http.server --bind 127.0.0.1'
 
 alias act="act --container-daemon-socket $XDG_RUNTIME_DIR/podman/podman.sock"
+
+# Alias for jj that disallows use of jj for the $HOME dotfiles repo,
+# to manipulate dotfiles repo use jjdotfiles.
+jj() {
+    local root
+
+    root=$(command jj root 2>/dev/null)
+
+    if [[ "$root" == "$HOME" ]]; then
+        echo "error: this is the dotfiles repo; use jjdotfiles" >&2
+        return 1
+    fi
+
+    command jj "$@"
+}
+
+# https://www.reddit.com/r/bash/comments/oinauf/comment/lb9xhi5
+function _compalias() {
+    local name val valarr fn
+    name="${COMP_WORDS[0]}"
+    val="${BASH_ALIASES[$name]}"
+
+    [ -z "$val" ] && return 1
+    read -ra valarr <<< "$val"
+    COMP_WORDS=("${valarr[@]}" "${COMP_WORDS[@]:1}")
+    COMP_LINE="${COMP_LINE//$name/$val}"
+    COMP_CWORD="$((${#COMP_WORDS[@]} - 1))"
+    COMP_POINT="${#COMP_LINE}"
+
+    # regex not perfect but good enough for 99%
+    fn="$(complete -p "${COMP_WORDS[0]}" | grep -Po -- '-F\s+\K\w+')"
+
+    # [-1] is generally faster than [$COMP_CWORD]
+    "$fn" "${COMP_WORDS[0]}" "${COMP_WORDS[-1]}" "${COMP_WORDS[-2]}"
+
+}
+
+function compalias() {
+    builtin alias "$@"
+    # nospace to prevent 2 spaces if default completion adds one
+    complete -o nospace -F _compalias "${@%%=*}"
+}
+
+compalias jjdotfiles="command jj --repository $HOME"

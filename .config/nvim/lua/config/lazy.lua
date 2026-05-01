@@ -228,6 +228,10 @@ require("lazy").setup({
 			vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 				buffer = bufnr,
 				callback = function(args)
+					if not vim.g.autoformat_enabled then
+						return
+					end
+
 					local lspFormattingAvail = false
 					for _, client in pairs(vim.lsp.get_clients({ bufnr = bufnr })) do
 						local caps = client.server_capabilities

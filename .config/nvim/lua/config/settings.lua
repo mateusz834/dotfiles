@@ -102,3 +102,15 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
 
 vim.diagnostic.config({ virtual_text = true })
+
+vim.keymap.set('n', '<space>q', function()
+    vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR })
+end)
+
+vim.g.autoformat_enabled = true
+vim.api.nvim_create_user_command("AutoFormatDisable", function()
+  vim.g.autoformat_enabled = false
+end, {})
+vim.api.nvim_create_user_command("AutoFormatEnable", function()
+  vim.g.autoformat_enabled = true
+end, {})

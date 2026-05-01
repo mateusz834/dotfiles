@@ -301,6 +301,9 @@ require("lazy").setup({
 
 			vim.lsp.config("gopls", {
 				cmd = { "gopls", "-remote.listen.timeout=15s" },
+				init_options = {
+					semanticTokens = true,
+				},
 				settings = {
 					gopls = {
 						analyses = {

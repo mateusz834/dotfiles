@@ -103,6 +103,8 @@ vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
 
 vim.diagnostic.config({ virtual_text = true })
 
+vim.api.nvim_set_hl(0, '@lsp.mod.shadowing', { bold=true, underline=true })
+
 vim.keymap.set('n', '<space>q', function()
     vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR })
 end)
